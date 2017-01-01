@@ -56,4 +56,13 @@ public class LivreService {
 
         return livreDao.load(requette);
     }
+
+    public List<Livre> findByISBN(String isbn) throws Exception {
+
+        String requette = "SELECT * FROM livre WHERE 1=1 ";
+        if (isbn != null && !isbn.equals("")) {
+            requette += "AND id like '" + isbn + "%'";
+        }
+        return livreDao.load(requette);
+    }
 }

@@ -20,10 +20,13 @@ public class Personne {
     private String prenom;
     private String adresse;
     private String email;
-    private String telephone  ; 
-    private String photo ; 
-    private String type ; 
-    
+    private String telephone;
+    private String photo;
+    private String type;
+    private int nbrRomanEmprunter;
+    private int nbrLivreEmprunter;
+    private int nbrBandeDesinesEmprunter;
+    private int nbrTotaleEmprunte;
 
     public Personne() {
     }
@@ -69,7 +72,6 @@ public class Personne {
         this.photo = photo;
     }
 
-    
     public void setPassword(String password) {
         this.password = password;
     }
@@ -112,6 +114,38 @@ public class Personne {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public int getNbrRomanEmprunter() {
+        return nbrRomanEmprunter;
+    }
+
+    public void setNbrRomanEmprunter(int nbrRomanEmprunter) {
+        this.nbrRomanEmprunter = nbrRomanEmprunter;
+    }
+
+    public int getNbrLivreEmprunter() {
+        return nbrLivreEmprunter;
+    }
+
+    public void setNbrLivreEmprunter(int nbrLivreEmprunter) {
+        this.nbrLivreEmprunter = nbrLivreEmprunter;
+    }
+
+    public int getNbrBandeDesinesEmprunter() {
+        return nbrBandeDesinesEmprunter;
+    }
+
+    public void setNbrBandeDesinesEmprunter(int nbrBandeDesinesEmprunter) {
+        this.nbrBandeDesinesEmprunter = nbrBandeDesinesEmprunter;
+    }
+
+    public int getNbrTotaleEmprunte() {
+        return nbrTotaleEmprunte;
+    }
+
+    public void setNbrTotaleEmprunte(int nbrTotaleEmprunte) {
+        this.nbrTotaleEmprunte = nbrTotaleEmprunte;
     }
 
     @Override
@@ -175,5 +209,4 @@ public class Personne {
         return true;
     }
 
-   
 }

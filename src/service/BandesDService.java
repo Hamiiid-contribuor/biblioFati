@@ -6,6 +6,7 @@
 package service;
 
 import bean.BandeDessine;
+import bean.Roman;
 import dao.BandeDessineDao;
 import java.util.List;
 
@@ -33,5 +34,8 @@ public class BandesDService {
     public int modifierBandeD(BandeDessine bandeDessine) throws Exception {
         return bandeDessineDao.update(bandeDessine);
     }
+    
+   
 
 }
+

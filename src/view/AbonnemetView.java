@@ -79,6 +79,11 @@ public class AbonnemetView extends javax.swing.JFrame {
         personne.setPhoto(path);
         personne.setLogin(nomUtilisateur.getText());
         personne.setPassword(motdePasse.getText());
+        
+        personne.setNbrBandeDesinesEmprunter(0);
+        personne.setNbrLivreEmprunter(0);
+        personne.setNbrRomanEmprunter(0);
+        personne.setNbrTotaleEmprunte(0);
 
         return personne;
     }

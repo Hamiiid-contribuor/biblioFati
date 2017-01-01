@@ -1,18 +1,21 @@
 package view;
 
-import bean.Livre;
+import bean.Emprunter;
 import helper.BandeDHelper;
 import helper.GuideHelper;
 import helper.LivreHelper;
-import helper.RevusHelper;
+import helper.PersonneHelper;
 import helper.RomanHelper;
 import java.awt.Frame;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import service.BandesDService;
+import service.EmprunteService;
 import service.GuideService;
 import service.LivreService;
-import service.RevusService;
+import service.PersonneService;
 import service.RomanService;
 
 /**
@@ -26,12 +29,27 @@ public class PretView extends javax.swing.JFrame {
     LivreService livreService = new LivreService();
     GuideService guideService = new GuideService();
     BandesDService bandesDService = new BandesDService();
+    PersonneService personneService = new PersonneService();
+    EmprunteService emprunteService = new EmprunteService();
     RomanHelper romanHelper;
     LivreHelper livreHelper;
     BandeDHelper bandeDHelper;
     GuideHelper guideHelper;
+    PersonneHelper personneHelper;
 
     String path;
+
+    //convertir la date de java a une date sql 
+    private static java.sql.Date convertUtilToSql(java.util.Date utilDate) {
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+        return sqlDate;
+    }
+
+    //convertir la date sql  a une date comprehensible par java  
+    public static java.util.Date convertSqlToUtil(java.sql.Date sqlDate) {
+        java.util.Date javaDate = new Date(sqlDate.getTime());
+        return javaDate;
+    }
 
     //methode contient toutes les truc a faire lors du  premier affichage 
     public void defaultParam() throws Exception {
@@ -40,7 +58,25 @@ public class PretView extends javax.swing.JFrame {
         livreHelper = new LivreHelper(livresTable, livreService.listLivres());
         bandeDHelper = new BandeDHelper(bandesDTable, bandesDService.listBandes());
         guideHelper = new GuideHelper(guidesTable, guideService.listGuides());
+        personneHelper = new PersonneHelper(trableAbonnes, personneService.listAdherent());
 
+        ouvrage1.setEnabled(false);
+        date1.setEnabled(false);
+        adherent1.setEnabled(false);
+        typeOuvrage.setVisible(false);
+    }
+
+    public Emprunter recupParam() {
+
+        Emprunter emprunter = new Emprunter();
+
+        emprunter.setPersonne(personneHelper.getSelected());
+        emprunter.setIdOuvrage(ouvrage1.getText());
+        emprunter.setTypeOuvrage(typeOuvrageCombobox.getSelectedItem() + "");
+        emprunter.setDatePret(convertUtilToSql(date1.getSelectedDate().getTime()));
+        emprunter.setTypeOuvrage(typeOuvrage.getText());
+        emprunter.setDateRetour(convertUtilToSql(date1.getSelectedDate().getTime()));
+        return emprunter;
     }
 
     //le Famous Constructeur
@@ -71,37 +107,43 @@ public class PretView extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         trableAbonnes = new javax.swing.JTable();
         jLabel17 = new javax.swing.JLabel();
-        idRecherche = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
+        idRechercheAbonne = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel7 = new javax.swing.JPanel();
         ISBNRomanRech = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         romansTable = new javax.swing.JTable();
         jPanel10 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
-        ISBNRomanRech1 = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        ISBNLivreRech = new javax.swing.JTextField();
         jScrollPane5 = new javax.swing.JScrollPane();
         livresTable = new javax.swing.JTable();
         jPanel18 = new javax.swing.JPanel();
         jPanel21 = new javax.swing.JPanel();
         ISBNRomanRech2 = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         bandesDTable = new javax.swing.JTable();
         jPanel19 = new javax.swing.JPanel();
         jPanel20 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         guidesTable = new javax.swing.JTable();
-        ISBNRomanRech3 = new javax.swing.JTextField();
+        ISBNGuideRech3 = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel18 = new javax.swing.JLabel();
+        adherent1 = new javax.swing.JTextField();
+        ouvrage1 = new javax.swing.JTextField();
+        jLabel19 = new javax.swing.JLabel();
+        date1 = new datechooser.beans.DateChooserCombo();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        typeOuvrageCombobox = new javax.swing.JComboBox<>();
+        jButton6 = new javax.swing.JButton();
+        typeOuvrage = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
@@ -154,15 +196,14 @@ public class PretView extends javax.swing.JFrame {
         jLabel17.setText("Identifiant");
         jPanel4.add(jLabel17);
         jLabel17.setBounds(60, 40, 73, 30);
-        jPanel4.add(idRecherche);
-        idRecherche.setBounds(146, 40, 200, 30);
 
-        jButton2.setBackground(new java.awt.Color(255, 255, 255));
-        jButton2.setFont(new java.awt.Font("Segoe Print", 1, 12)); // NOI18N
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/design/jjjj.png"))); // NOI18N
-        jButton2.setText("Recherche");
-        jPanel4.add(jButton2);
-        jButton2.setBounds(370, 40, 180, 33);
+        idRechercheAbonne.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                idRechercheAbonneKeyTyped(evt);
+            }
+        });
+        jPanel4.add(idRechercheAbonne);
+        idRechercheAbonne.setBounds(146, 40, 200, 30);
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Liste des Ouvrage", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe Print", 1, 12))); // NOI18N
@@ -173,14 +214,15 @@ public class PretView extends javax.swing.JFrame {
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
 
+        ISBNRomanRech.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ISBNRomanRechKeyTyped(evt);
+            }
+        });
+
         jLabel12.setBackground(new java.awt.Color(0, 0, 0));
         jLabel12.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
         jLabel12.setText("ISBN ");
-
-        jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setFont(new java.awt.Font("Segoe Print", 1, 12)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/design/jjjj.png"))); // NOI18N
-        jButton1.setText("Recherche");
 
         romansTable.setFont(new java.awt.Font("Segoe Print", 1, 12)); // NOI18N
         romansTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -212,14 +254,12 @@ public class PretView extends javax.swing.JFrame {
                 .addComponent(jLabel12)
                 .addGap(18, 18, 18)
                 .addComponent(ISBNRomanRech, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addContainerGap(251, Short.MAX_VALUE))
             .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel7Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGap(0, 2, Short.MAX_VALUE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 580, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 3, Short.MAX_VALUE)))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -227,14 +267,13 @@ public class PretView extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(ISBNRomanRech)
-                    .addComponent(jButton1))
-                .addGap(208, 208, 208))
+                    .addComponent(ISBNRomanRech))
+                .addGap(212, 212, 212))
             .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel7Layout.createSequentialGroup()
-                    .addGap(0, 51, Short.MAX_VALUE)
+                    .addGap(0, 50, Short.MAX_VALUE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 51, Short.MAX_VALUE)))
+                    .addGap(0, 49, Short.MAX_VALUE)))
         );
 
         jTabbedPane2.addTab("Romans ", jPanel7);
@@ -245,10 +284,11 @@ public class PretView extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
         jLabel13.setText("ISBN ");
 
-        jButton3.setBackground(new java.awt.Color(255, 255, 255));
-        jButton3.setFont(new java.awt.Font("Segoe Print", 1, 12)); // NOI18N
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/design/jjjj.png"))); // NOI18N
-        jButton3.setText("Recherche");
+        ISBNLivreRech.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ISBNLivreRechKeyTyped(evt);
+            }
+        });
 
         livresTable.setFont(new java.awt.Font("Segoe Print", 1, 12)); // NOI18N
         livresTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -279,9 +319,7 @@ public class PretView extends javax.swing.JFrame {
                 .addGap(59, 59, 59)
                 .addComponent(jLabel13)
                 .addGap(18, 18, 18)
-                .addComponent(ISBNRomanRech1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(ISBNLivreRech, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 580, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -293,8 +331,7 @@ public class PretView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(ISBNRomanRech1)
-                    .addComponent(jButton3))
+                    .addComponent(ISBNLivreRech))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
@@ -307,11 +344,6 @@ public class PretView extends javax.swing.JFrame {
         jLabel14.setBackground(new java.awt.Color(0, 0, 0));
         jLabel14.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
         jLabel14.setText("ISBN ");
-
-        jButton4.setBackground(new java.awt.Color(255, 255, 255));
-        jButton4.setFont(new java.awt.Font("Segoe Print", 1, 12)); // NOI18N
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/design/jjjj.png"))); // NOI18N
-        jButton4.setText("Recherche");
 
         bandesDTable.setFont(new java.awt.Font("Segoe Print", 1, 12)); // NOI18N
         bandesDTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -343,8 +375,6 @@ public class PretView extends javax.swing.JFrame {
                 .addComponent(jLabel14)
                 .addGap(18, 18, 18)
                 .addComponent(ISBNRomanRech2, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel21Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -357,8 +387,7 @@ public class PretView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
-                    .addComponent(ISBNRomanRech2)
-                    .addComponent(jButton4))
+                    .addComponent(ISBNRomanRech2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
@@ -400,14 +429,15 @@ public class PretView extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(guidesTable);
 
+        ISBNGuideRech3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ISBNGuideRech3KeyTyped(evt);
+            }
+        });
+
         jLabel15.setBackground(new java.awt.Color(0, 0, 0));
         jLabel15.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
         jLabel15.setText("ISBN ");
-
-        jButton5.setBackground(new java.awt.Color(255, 255, 255));
-        jButton5.setFont(new java.awt.Font("Segoe Print", 1, 12)); // NOI18N
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/design/jjjj.png"))); // NOI18N
-        jButton5.setText("Recherche");
 
         javax.swing.GroupLayout jPanel20Layout = new javax.swing.GroupLayout(jPanel20);
         jPanel20.setLayout(jPanel20Layout);
@@ -420,19 +450,16 @@ public class PretView extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel15)
                 .addGap(18, 18, 18)
-                .addComponent(ISBNRomanRech3, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(58, 58, 58))
+                .addComponent(ISBNGuideRech3, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(255, 255, 255))
         );
         jPanel20Layout.setVerticalGroup(
             jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel20Layout.createSequentialGroup()
-                .addGap(7, 7, 7)
+                .addGap(10, 10, 10)
                 .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
-                    .addComponent(ISBNRomanRech3)
-                    .addComponent(jButton5))
+                    .addComponent(ISBNGuideRech3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -454,20 +481,126 @@ public class PretView extends javax.swing.JFrame {
         jTabbedPane2.addTab("Guide_voyage", jPanel19);
 
         jPanel6.add(jTabbedPane2);
-        jTabbedPane2.setBounds(16, 25, 590, 240);
+        jTabbedPane2.setBounds(10, 20, 590, 240);
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nouveau Pret", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe Print", 1, 12))); // NOI18N
+
+        jLabel18.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel18.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
+        jLabel18.setText("Adherent  ");
+
+        adherent1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                adherent1ActionPerformed(evt);
+            }
+        });
+
+        jLabel19.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel19.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
+        jLabel19.setText("Ouvrage ");
+
+        jLabel20.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel20.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
+        jLabel20.setText("Date de Pret  ");
+
+        jLabel21.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel21.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
+        jLabel21.setText("Etat d'ouvrage ");
+
+        typeOuvrageCombobox.setFont(new java.awt.Font("Segoe Print", 1, 11)); // NOI18N
+        typeOuvrageCombobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Selectionner --", "Bon", "Moyen", "Abimer" }));
+        typeOuvrageCombobox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                typeOuvrageComboboxItemStateChanged(evt);
+            }
+        });
+        typeOuvrageCombobox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                typeOuvrageComboboxActionPerformed(evt);
+            }
+        });
+
+        jButton6.setBackground(new java.awt.Color(255, 255, 255));
+        jButton6.setFont(new java.awt.Font("Segoe Print", 1, 12)); // NOI18N
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/design/checked-input-icon-1.png"))); // NOI18N
+        jButton6.setText("Effectuer ");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(adherent1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                                .addComponent(jLabel19)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(typeOuvrage, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(ouvrage1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                .addComponent(jLabel20)
+                                .addGap(18, 18, 18)
+                                .addComponent(date1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(typeOuvrageCombobox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap(24, Short.MAX_VALUE)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(adherent1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(date1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ouvrage1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(typeOuvrageCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(16, 16, 16)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton6)
+                    .addComponent(typeOuvrage, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 747, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -479,8 +612,8 @@ public class PretView extends javax.swing.JFrame {
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -499,10 +632,10 @@ public class PretView extends javax.swing.JFrame {
         jTabbedPane1.addTab("Nouveau Emprunte ", jPanel2);
 
         jPanel1.add(jTabbedPane1);
-        jTabbedPane1.setBounds(0, 0, 1400, 610);
+        jTabbedPane1.setBounds(0, 0, 1360, 610);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(0, 130, 1400, 610);
+        jPanel1.setBounds(0, 130, 1370, 610);
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
@@ -521,7 +654,7 @@ public class PretView extends javax.swing.JFrame {
         jPanel5.setBackground(new java.awt.Color(62, 64, 70));
         jPanel5.setLayout(null);
         getContentPane().add(jPanel5);
-        jPanel5.setBounds(0, 50, 1400, 80);
+        jPanel5.setBounds(0, 50, 1370, 80);
 
         jPanel15.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -590,7 +723,7 @@ public class PretView extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
-                .addContainerGap(509, Short.MAX_VALUE))
+                .addContainerGap(479, Short.MAX_VALUE))
         );
         jPanel15Layout.setVerticalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -603,7 +736,7 @@ public class PretView extends javax.swing.JFrame {
         );
 
         getContentPane().add(jPanel15);
-        jPanel15.setBounds(0, 0, 1400, 50);
+        jPanel15.setBounds(0, 0, 1370, 50);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -641,14 +774,19 @@ public class PretView extends javax.swing.JFrame {
 
     private void trableAbonnesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_trableAbonnesMouseClicked
         // TODO add your handling code here:
+        adherent1.setText(personneHelper.getSelected().getId());
     }//GEN-LAST:event_trableAbonnesMouseClicked
 
     private void guidesTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guidesTableMouseClicked
         // TODO add your handling code here:
+        ouvrage1.setText(guideHelper.getSelected().getId());
+        typeOuvrage.setText("Guide");
     }//GEN-LAST:event_guidesTableMouseClicked
 
     private void romansTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_romansTableMouseClicked
         // TODO add your handling code here:
+        ouvrage1.setText(romanHelper.getSelected().getId());
+        typeOuvrage.setText("Roman");
     }//GEN-LAST:event_romansTableMouseClicked
 
     private void bandesDTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bandesDTableMouseClicked
@@ -657,7 +795,80 @@ public class PretView extends javax.swing.JFrame {
 
     private void livresTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_livresTableMouseClicked
         // TODO add your handling code here:
+        ouvrage1.setText(livreHelper.getSelected().getId());
+        typeOuvrage.setText("Livre");
     }//GEN-LAST:event_livresTableMouseClicked
+
+    private void adherent1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adherent1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_adherent1ActionPerformed
+
+    private void typeOuvrageComboboxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_typeOuvrageComboboxItemStateChanged
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_typeOuvrageComboboxItemStateChanged
+
+    private void typeOuvrageComboboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeOuvrageComboboxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_typeOuvrageComboboxActionPerformed
+
+    private void idRechercheAbonneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_idRechercheAbonneKeyTyped
+        try {
+            // TODO add your handling code here:
+
+            personneHelper.setList(personneService.rechercheParId(idRechercheAbonne.getText()));
+        } catch (Exception ex) {
+            Logger.getLogger(PretView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_idRechercheAbonneKeyTyped
+
+    private void ISBNRomanRechKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ISBNRomanRechKeyTyped
+        try {
+            // TODO add your handling code here:
+            romanHelper.setList(romanService.findByISBN(ISBNRomanRech.getText()));
+        } catch (Exception ex) {
+            Logger.getLogger(PretView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_ISBNRomanRechKeyTyped
+
+    private void ISBNLivreRechKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ISBNLivreRechKeyTyped
+        try {
+            // TODO add your handling code here:
+            livreHelper.setList(livreService.findByISBN(ISBNLivreRech.getText()));
+        } catch (Exception ex) {
+            Logger.getLogger(PretView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_ISBNLivreRechKeyTyped
+
+    private void ISBNGuideRech3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ISBNGuideRech3KeyTyped
+        try {
+            // TODO add your handling code here:
+            guideHelper.setList(guideService.findByISBN(ISBNGuideRech3.getText()));
+        } catch (Exception ex) {
+            Logger.getLogger(PretView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_ISBNGuideRech3KeyTyped
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        try {
+
+            int res = emprunteService.traitmentEmp(recupParam());
+            if (res == -3) {
+                JOptionPane.showMessageDialog(null, "cet Adherent a deja 5 Ouvrage non retourner !!");
+            } else if (res == -1) {
+                JOptionPane.showMessageDialog(null, "cet Adherent n'a pas le droit de deppaser 3 Livre !!");
+            } else if (res == -2) {
+                JOptionPane.showMessageDialog(null, "cet Adherent n'a pas le droit de deppaser 3 Roman !!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Pret bien Effectuer");
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(PretView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -710,25 +921,27 @@ public class PretView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField ISBNGuideRech3;
+    private javax.swing.JTextField ISBNLivreRech;
     private javax.swing.JTextField ISBNRomanRech;
-    private javax.swing.JTextField ISBNRomanRech1;
     private javax.swing.JTextField ISBNRomanRech2;
-    private javax.swing.JTextField ISBNRomanRech3;
+    private javax.swing.JTextField adherent1;
     private javax.swing.JTable bandesDTable;
+    private datechooser.beans.DateChooserCombo date1;
     private javax.swing.JTable guidesTable;
-    private javax.swing.JTextField idRecherche;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JTextField idRechercheAbonne;
+    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -746,6 +959,7 @@ public class PretView extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -754,7 +968,10 @@ public class PretView extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTable livresTable;
+    private javax.swing.JTextField ouvrage1;
     private javax.swing.JTable romansTable;
     private javax.swing.JTable trableAbonnes;
+    private javax.swing.JLabel typeOuvrage;
+    private javax.swing.JComboBox<String> typeOuvrageCombobox;
     // End of variables declaration//GEN-END:variables
 }

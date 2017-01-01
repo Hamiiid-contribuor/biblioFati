@@ -35,6 +35,20 @@ public class PersonneService {
         return personneDao.delete(personne);
     }
 
+    public Personne findById(String id) throws Exception {
+        return personneDao.findById(id);
+    }
+
+    public List<Personne> rechercheParId(String id) throws Exception {
+
+        String requette = "SELECT * FROM  personne  WHERE type='Adherent' AND  1=1 ";
+        if (id != null && !id.equals("")) {
+            requette += " AND id like '" + id + "%'";
+        }
+
+        return personneDao.load(requette);
+    }
+
     public List<Personne> rechercheAdherent(String id, String nom, String prenom, String email, String tel) throws Exception {
 
         String requette = "SELECT  * FROM personne WHERE type='Adherent' AND  1=1 ";
@@ -57,6 +71,7 @@ public class PersonneService {
 
         return personneDao.load(requette);
     }
+
     public List<Personne> rechercheAssistant(String id, String nom, String prenom, String email, String tel) throws Exception {
 
         String requette = "SELECT  * FROM personne WHERE type='Assistant' AND  1=1 ";
@@ -84,7 +99,8 @@ public class PersonneService {
         String requette = "SELECT * FROM  personne WHERE type='Adherent' ";
         return personneDao.load(requette);
     }
-     public List<Personne> listAssistant() throws Exception {
+
+    public List<Personne> listAssistant() throws Exception {
         String requette = "SELECT * FROM  personne WHERE type='Assistant' ";
         return personneDao.load(requette);
     }
