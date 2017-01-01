@@ -45,24 +45,24 @@ public class OuvragesView extends javax.swing.JFrame {
     LivreHelper livreHelper;
     BandeDHelper bandeDHelper;
     GuideHelper guideHelper;
-    
+
     String path;
 
     //methode contient toutes les truc a faire lors du  premier affichage 
     public void defaultParam() throws Exception {
-        
+
         romanHelper = new RomanHelper(tableRomans, romanService.listRomans());
         livreHelper = new LivreHelper(tableLivres, livreService.listLivres());
         revusHelper = new RevusHelper(revusTable, revusService.listRevus());
         bandeDHelper = new BandeDHelper(bandesDTable, bandesDService.listBandes());
         guideHelper = new GuideHelper(guidesTable, guideService.listGuides());
         panelInfoSupLivre.setVisible(false);
-        
+
     }
 
     //methode qui va netoye notre vue 
     public void cleanView() throws Exception {
-        
+
         isbnTextField.setText("");
         titreTextField.setText("");
         auteurTextField.setText("");
@@ -71,9 +71,9 @@ public class OuvragesView extends javax.swing.JFrame {
         typeOuvrageCombobox.setSelectedItem("");
         imageLabel.setIcon(null);
         typeOuvrageCombobox.setSelectedIndex(0);
-        
+
         defaultParam();
-        
+
     }
 
     //convertir la date de java a une date sql 
@@ -99,7 +99,7 @@ public class OuvragesView extends javax.swing.JFrame {
 
     //recuperer les paramettres saisie par l'utilisateur
     public Ouvrage getParam() {
-        
+
         Ouvrage ouvrage = new Ouvrage();
         ouvrage.setId(isbnTextField.getText());
         ouvrage.setTitre(titreTextField.getText());
@@ -107,10 +107,10 @@ public class OuvragesView extends javax.swing.JFrame {
         ouvrage.setEditeur(editeurTextField.getText());
         ouvrage.setDateEdition(convertUtilToSql(dateEditionSchooser.getSelectedDate().getTime()));
         ouvrage.setQuantiteStock(new Integer(quantiteTextField.getText()));
-        
+
         path = path.replace("\\", "\\\\");
         ouvrage.setCouverture(path);
-        
+
         return ouvrage;
     }
 
@@ -1413,12 +1413,12 @@ public class OuvragesView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        
+
         Ouvrage ouvrage = getParam();
         String typeOuvrage = typeOuvrageCombobox.getSelectedItem().toString();
-        
+
         if (typeOuvrage.equals("Roman")) {
-            
+
             Roman roman = new Roman();
             roman.setId(ouvrage.getId());
             roman.setTitre(ouvrage.getTitre());
@@ -1427,7 +1427,7 @@ public class OuvragesView extends javax.swing.JFrame {
             roman.setDateEdition(ouvrage.getDateEdition());
             roman.setQuantiteStock(ouvrage.getQuantiteStock());
             roman.setCouverture(ouvrage.getCouverture());
-            
+
             try {
                 if (roman != null) {
                     int res = romanService.ajouterRoman(roman);
@@ -1441,9 +1441,9 @@ public class OuvragesView extends javax.swing.JFrame {
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "ISBN deja existe ");
             }
-            
+
         } else if (typeOuvrage.equals("Livre")) {
-            
+
             Livre livre = new Livre();
             livre.setId(ouvrage.getId());
             livre.setTitre(ouvrage.getTitre());
@@ -1453,7 +1453,7 @@ public class OuvragesView extends javax.swing.JFrame {
             livre.setQuantiteStock(ouvrage.getQuantiteStock());
             livre.setCouverture(ouvrage.getCouverture());
             livre.setTheme(themeLivreCombobox.getSelectedItem() + "");
-            
+
             try {
                 if (livre != null) {
                     int res = livreService.ajouterLivre(livre);
@@ -1462,16 +1462,16 @@ public class OuvragesView extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(null, "Livre bien Ajouter ");
                     }
                 }
-                
+
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "ISBN deja existe ");
                 Logger.getLogger(OuvragesView.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         } else if (typeOuvrage.equals("Revus")) {
-            
+
             Revus revus = new Revus();
-            
+
             revus.setId(ouvrage.getId());
             revus.setTitre(ouvrage.getTitre());
             revus.setAuteur(ouvrage.getAuteur());
@@ -1479,7 +1479,7 @@ public class OuvragesView extends javax.swing.JFrame {
             revus.setDateEdition(ouvrage.getDateEdition());
             revus.setQuantiteStock(ouvrage.getQuantiteStock());
             revus.setCouverture(ouvrage.getCouverture());
-            
+
             try {
                 if (revus != null) {
                     int res = revusService.ajouterRevus(revus);
@@ -1488,16 +1488,16 @@ public class OuvragesView extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(null, "Revus bien Ajouter ");
                     }
                 }
-                
+
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "ISBN deja existe ");
                 Logger.getLogger(OuvragesView.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         } else if (typeOuvrage.equals("Guide de voyage")) {
-            
+
             GuideVoyage guideVoyage = new GuideVoyage();
-            
+
             guideVoyage.setId(ouvrage.getId());
             guideVoyage.setTitre(ouvrage.getTitre());
             guideVoyage.setAuteur(ouvrage.getAuteur());
@@ -1505,7 +1505,7 @@ public class OuvragesView extends javax.swing.JFrame {
             guideVoyage.setDateEdition(ouvrage.getDateEdition());
             guideVoyage.setQuantiteStock(ouvrage.getQuantiteStock());
             guideVoyage.setCouverture(ouvrage.getCouverture());
-            
+
             try {
                 if (guideVoyage != null) {
                     int res = guideService.ajouterGuide(guideVoyage);
@@ -1514,14 +1514,14 @@ public class OuvragesView extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(null, "Guide_voyage  bien Ajouter ");
                     }
                 }
-                
+
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "ISBN deja existe ");
                 Logger.getLogger(OuvragesView.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
-        
+
 
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -1536,9 +1536,9 @@ public class OuvragesView extends javax.swing.JFrame {
                     roman.setDateEdition(getParam().getDateEdition());
                     roman.setCouverture(getParam().getCouverture());
                     roman.setQuantiteStock(getParam().getQuantiteStock());
-                    
+
                     int res = romanService.modifierRoman(roman);
-                    
+
                     if (res == 1) {
                         JOptionPane.showMessageDialog(null, "Roman bien modifier ");
                         romanHelper.update(roman);
@@ -1547,7 +1547,7 @@ public class OuvragesView extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Priere de selectionez l'ouvrage a Modifier ", "Info", JOptionPane.INFORMATION_MESSAGE);
                 }
             } else if (jTabbedPane2.getSelectedIndex() == 1) {
-                
+
                 if (livreHelper.getSelected() != null) {
                     int p = JOptionPane.showConfirmDialog(null, "Vous Voulez Vraiment Modifier Ce Livre ??", "Confirm", JOptionPane.YES_NO_OPTION);
                     if (p == 0) {
@@ -1561,7 +1561,7 @@ public class OuvragesView extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Priere de selectionez l'ouvrage a Modifier ", "Info", JOptionPane.INFORMATION_MESSAGE);
                 }
             } else if (jTabbedPane2.getSelectedIndex() == 2) {
-                
+
                 if (revusHelper.getSelected() != null) {
                     int p = JOptionPane.showConfirmDialog(null, "Vous Voulez Vraiment Supprimer Ce Revus ??", "Confirm", JOptionPane.YES_NO_OPTION);
                     if (p == 0) {
@@ -1575,7 +1575,7 @@ public class OuvragesView extends javax.swing.JFrame {
                     }
                 }
             } else if (jTabbedPane2.getSelectedIndex() == 3) {
-                
+
             } else if (jTabbedPane2.getSelectedIndex() == 4) {
                 if (guideHelper.getSelected() != null) {
                     int p = JOptionPane.showConfirmDialog(null, "Vous Voulez Vraiment Supprimer Ce Guide ??", "Confirm", JOptionPane.YES_NO_OPTION);
@@ -1589,20 +1589,20 @@ public class OuvragesView extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(null, "Priere de selectionez l'ouvrage a Modifier ", "Info", JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
-                
+
             }
         } catch (Exception ex) {
         }
-        
+
 
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        
+
         try {
             //ici je detecte qu-il s'agit d'un  Roman  
             if (jTabbedPane2.getSelectedIndex() == 0) {
-                
+
                 if (romanHelper.getSelected() != null) {
                     int response = JOptionPane.showConfirmDialog(null, "Vous Voulez Vraiment Supprimer Ce Roman ??", "Confirm", JOptionPane.YES_NO_OPTION);
                     // s'il y ait une confimation
@@ -1617,9 +1617,9 @@ public class OuvragesView extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Priere de selectionez l'ouvrage a supprimer ", "Info", JOptionPane.INFORMATION_MESSAGE);
                 }
             } else if (jTabbedPane2.getSelectedIndex() == 1) {
-                
+
                 if (livreHelper.getSelected() != null) {
-                    
+
                     int response = JOptionPane.showConfirmDialog(null, "Vous Voulez Vraiment Supprimer Ce Livre ??", "Confirm", JOptionPane.YES_NO_OPTION);
                     if (response == 0) {
                         int res = livreService.supprimerLivre(livreHelper.getSelected());
@@ -1632,7 +1632,7 @@ public class OuvragesView extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Priere de selectionez l'ouvrage a supprimer ", "Info", JOptionPane.INFORMATION_MESSAGE);
                 }
             } else if (jTabbedPane2.getSelectedIndex() == 2) {
-                
+
                 if (revusHelper.getSelected() != null) {
                     int response = JOptionPane.showConfirmDialog(null, "Vous Voulez Vraiment Supprimer Ce Revus ??", "Confirm", JOptionPane.YES_NO_OPTION);
                     if (response == 0) {
@@ -1646,7 +1646,7 @@ public class OuvragesView extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Priere de selectionez l'ouvrage a supprimer ", "Info", JOptionPane.INFORMATION_MESSAGE);
                 }
             } else if (jTabbedPane2.getSelectedIndex() == 3) {
-                
+
             } else if (jTabbedPane2.getSelectedIndex() == 4) {
                 if (guideHelper.getSelected() != null) {
                     int response = JOptionPane.showConfirmDialog(null, "Vous Voulez Vraiment Supprimer Ce Guide ??", "Confirm", JOptionPane.YES_NO_OPTION);
@@ -1660,7 +1660,7 @@ public class OuvragesView extends javax.swing.JFrame {
                 } else {
                     JOptionPane.showMessageDialog(null, "Priere de selectionez l'ouvrage a supprimer ", "Info", JOptionPane.INFORMATION_MESSAGE);
                 }
-                
+
             }
         } catch (Exception ex) {
         }
@@ -1669,7 +1669,7 @@ public class OuvragesView extends javax.swing.JFrame {
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
         try {
             if (jTabbedPane2.getSelectedIndex() == 0) {
-                
+
                 List<Roman> romans = romanService.rechercheRomans(ISBNRomanRech.getText(), titreRomanRech.getText(), auteurRomanRech.getText(), editeurRomanRech.getText());
                 romanHelper.setList(romans);
             } else if (jTabbedPane2.getSelectedIndex() == 1) {
@@ -1680,11 +1680,11 @@ public class OuvragesView extends javax.swing.JFrame {
                 List<Livre> livres = livreService.rechercheLivres(ISBNRomanRech4.getText(), titreRomanRech4.getText(), auteurRomanRech4.getText(), editeurRomanRech4.getText(), theme);
                 livreHelper.setList(livres);
             } else if (jTabbedPane2.getSelectedIndex() == 2) {
-                
+
                 List<Revus> revus = revusService.rechercheRevus(ISBNRomanRech2.getText(), titreRomanRech2.getText(), auteurRomanRech2.getText(), editeurRomanRech2.getText());
                 revusHelper.setList(revus);
             } else if (jTabbedPane2.getSelectedIndex() == 4) {
-                
+
                 List<GuideVoyage> guides = guideService.rechercheGuides(ISBNRomanRech3.getText(), titreRomanRech3.getText(), auteurRomanRech3.getText(), editeurRomanRech3.getText());
                 guideHelper.setList(guides);
             }
@@ -1747,6 +1747,16 @@ public class OuvragesView extends javax.swing.JFrame {
 
     private void guidesTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guidesTableMouseClicked
         // TODO add your handling code here:
+        GuideVoyage guideVoyage = new GuideVoyage();
+
+        isbnTextField.setText(guideVoyage.getId());
+        titreTextField.setText(guideVoyage.getTitre());
+        auteurTextField.setText(guideVoyage.getAuteur());
+        editeurTextField.setText(guideVoyage.getEditeur());
+        quantiteTextField.setText(guideVoyage.getQuantiteStock() + "");
+        typeOuvrageCombobox.setSelectedItem("Guide de voyage");
+        //dateEditionSchooser.setD(roman.getDateEdition());
+        imageLabel.setIcon(ResizeImage(guideVoyage.getCouverture()));
     }//GEN-LAST:event_guidesTableMouseClicked
 
     private void bandesDTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bandesDTableMouseClicked
@@ -1756,7 +1766,7 @@ public class OuvragesView extends javax.swing.JFrame {
     private void revusTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_revusTableMouseClicked
         // TODO add your handling code here:
         Revus revus = revusHelper.getSelected();
-        
+
         isbnTextField.setText(revus.getId());
         titreTextField.setText(revus.getTitre());
         auteurTextField.setText(revus.getAuteur());
@@ -1775,7 +1785,7 @@ public class OuvragesView extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         Livre livre = livreHelper.getSelected();
-        
+
         isbnTextField.setText(livre.getId());
         titreTextField.setText(livre.getTitre());
         auteurTextField.setText(livre.getAuteur());
@@ -1790,7 +1800,7 @@ public class OuvragesView extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         Roman roman = romanHelper.getSelected();
-        
+
         isbnTextField.setText(roman.getId());
         titreTextField.setText(roman.getTitre());
         auteurTextField.setText(roman.getAuteur());
@@ -1814,14 +1824,14 @@ public class OuvragesView extends javax.swing.JFrame {
     }//GEN-LAST:event_ISBNRomanRech3ActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        
+
         AbonnemetView av = new AbonnemetView();
         av.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        
+
         AssistantsView av = new AssistantsView();
         av.setVisible(true);
         this.setVisible(false);
@@ -1829,7 +1839,7 @@ public class OuvragesView extends javax.swing.JFrame {
 
     private void jLabel22MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel22MouseClicked
         // TODO add your handling code here:
-        PretView pv = new PretView();        
+        PretView pv = new PretView();
         pv.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jLabel22MouseClicked
