@@ -11,27 +11,8 @@ package bean;
  */
 public class Livre extends Ouvrage {
 
-    private String theme; //art  , histoire  , culture 
-
     public Livre() {
         super();
-    }
-
-    public Livre(String theme) {
-        this.theme = theme;
-    }
-
-    @Override
-    public String toString() {
-        return "Livre{" + "theme=" + theme + '}';
-    }
-
-    public String getTheme() {
-        return theme;
-    }
-
-    public void setTheme(String theme) {
-        this.theme = theme;
     }
 
 }

@@ -5,7 +5,7 @@
  */
 package helper;
 
-import bean.Revus;
+import bean.Emprunter;
 import java.util.List;
 import javax.swing.JTable;
 
@@ -13,7 +13,7 @@ import javax.swing.JTable;
  *
  * @author hamid
  */
-public class RevusHelper  extends AbstractHelper<Revus> {
+public class EmprunterHelper  extends AbstractHelper<Emprunter> {
     
     
     
@@ -21,12 +21,11 @@ public class RevusHelper  extends AbstractHelper<Revus> {
 
    static {
         titres = new AbstractHelperItem[]{
-            new AbstractHelperItem(" ISBN ","id"),
-            new AbstractHelperItem("Titre","titre"),
-            new AbstractHelperItem("Auteur ","auteur"),
-            new AbstractHelperItem("Qte Stock ", "quantiteStock"),
-            new AbstractHelperItem("Editeur ","editeur"),
-            new AbstractHelperItem(" Date Edition  ","dateEdition"),
+            new AbstractHelperItem(" ISBN d'Ouvrage","idOuvrage"),
+            new AbstractHelperItem("Date Emprunte","datePret"),
+            new AbstractHelperItem("Type  ","typeOuvrage"),
+            new AbstractHelperItem("Etat  ","etatOuvrage"),
+            new AbstractHelperItem("Date_Max retour   ","DateRetour"),
          
         
         };
@@ -34,11 +33,11 @@ public class RevusHelper  extends AbstractHelper<Revus> {
 
    
 
-    public RevusHelper(JTable jTable, List<Revus> list) {
+    public EmprunterHelper(JTable jTable, List<Emprunter> list) {
         super(titres, jTable, list);
     }
 
-    public RevusHelper(JTable jTable) {
+    public EmprunterHelper(JTable jTable) {
         super(titres, jTable);
 
     }

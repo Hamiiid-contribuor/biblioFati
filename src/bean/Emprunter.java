@@ -21,6 +21,7 @@ public class Emprunter {
 
     private String idOuvrage;
     private String typeOuvrage;
+    private int retourner  ; 
 
     public Emprunter() {
     }
@@ -80,5 +81,22 @@ public class Emprunter {
     public void setTypeOuvrage(String typeOuvrage) {
         this.typeOuvrage = typeOuvrage;
     }
+
+    public int getRetourner() {
+        return retourner;
+    }
+
+    public void setRetourner(int retourner) {
+        this.retourner = retourner;
+    }
+    
+    
+
+    @Override
+    public String toString() {
+        return "Emprunter{" + "id=" + id + ", personne=" + personne + ", datePret=" + datePret + ", DateRetour=" + DateRetour + ", EtatOuvrage=" + EtatOuvrage + ", idOuvrage=" + idOuvrage + ", typeOuvrage=" + typeOuvrage + '}';
+    }
+    
+    
 
 }

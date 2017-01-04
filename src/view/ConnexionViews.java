@@ -20,13 +20,13 @@ import util.Session;
  * @author hamid
  */
 public class ConnexionViews extends javax.swing.JFrame {
-    
+
     Timer t;
     ActionListener al;
     PersonneService personneService = new PersonneService();
-    
+
     public ConnexionViews() {
-        
+
         this.setLocation(500, 130);
 //        al = new ActionListener() {
 //            @Override
@@ -45,7 +45,7 @@ public class ConnexionViews extends javax.swing.JFrame {
 //        };
 //        t = new Timer(10, al);
         initComponents();
-        
+
     }
 
     /**
@@ -210,8 +210,8 @@ public class ConnexionViews extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
-        
-        PublicView pv = new PublicView();        
+
+        PublicView pv = new PublicView();
         pv.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jLabel4MouseClicked
@@ -219,31 +219,29 @@ public class ConnexionViews extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             Personne loadedPersonne;
-            
+
             loadedPersonne = personneService.seConnecter(loginTextField.getText(), password.getText());
-            
+
             System.out.println(loadedPersonne);
-            System.out.println("ha type --->" + loadedPersonne.getType());
+
             if (loadedPersonne != null) {
+                System.out.println("ha type --->" + loadedPersonne.getType());
                 Session.updateAttribute(loadedPersonne, "loadedPersonne");
-                
+
                 if (loadedPersonne.getType().equals("Bibliothecaire")) {
                     OuvragesView ov = new OuvragesView();
                     ov.setVisible(true);
                 } else if (loadedPersonne.getType().equals("Assistant")) {
                     OuvragesView ov = new OuvragesView();
                     ov.setVisible(true);
-                } else if (loadedPersonne.getType().equals("Adherent")) {
-                    
-                    PublicView pv = new PublicView();
-                    pv.setVisible(true);
-                }
+                } 
                 this.setVisible(false);
-                
+
             } else {
+                System.out.println("khona rah makaynch !!");
                 JOptionPane.showMessageDialog(null, "Informations Erronés ");
             }
-            
+
         } catch (Exception ex) {
             Logger.getLogger(ConnexionViews.class.getName()).log(Level.SEVERE, null, ex);
         }

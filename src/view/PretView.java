@@ -1,12 +1,15 @@
 package view;
 
 import bean.Emprunter;
+import bean.Personne;
 import helper.BandeDHelper;
+import helper.EmprunterHelper;
 import helper.GuideHelper;
 import helper.LivreHelper;
 import helper.PersonneHelper;
 import helper.RomanHelper;
 import java.awt.Frame;
+import java.awt.print.PrinterException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +20,7 @@ import service.GuideService;
 import service.LivreService;
 import service.PersonneService;
 import service.RomanService;
+import util.Session;
 
 /**
  *
@@ -35,7 +39,9 @@ public class PretView extends javax.swing.JFrame {
     LivreHelper livreHelper;
     BandeDHelper bandeDHelper;
     GuideHelper guideHelper;
+    EmprunterHelper emprunterHelper;
     PersonneHelper personneHelper;
+    PersonneHelper personneHelper1;
 
     String path;
 
@@ -59,20 +65,31 @@ public class PretView extends javax.swing.JFrame {
         bandeDHelper = new BandeDHelper(bandesDTable, bandesDService.listBandes());
         guideHelper = new GuideHelper(guidesTable, guideService.listGuides());
         personneHelper = new PersonneHelper(trableAbonnes, personneService.listAdherent());
+        personneHelper1 = new PersonneHelper(trableAbonnes1, personneService.listAdherent());
+        emprunterHelper = new EmprunterHelper(tableFicheAdhrent);
 
         ouvrage1.setEnabled(false);
         date1.setEnabled(false);
         adherent1.setEnabled(false);
         typeOuvrage.setVisible(false);
+        
+        
+        //droit d'acces 
+        Personne connectedPersonne = (Personne) Session.getAttribut("loadedPersonne");
+        if(connectedPersonne.getType().equals("Assistant")){
+            jLabel3.setVisible(false);
+        }
+        
     }
 
     public Emprunter recupParam() {
 
         Emprunter emprunter = new Emprunter();
 
+        emprunter.setRetourner(0);
         emprunter.setPersonne(personneHelper.getSelected());
         emprunter.setIdOuvrage(ouvrage1.getText());
-        emprunter.setTypeOuvrage(typeOuvrageCombobox.getSelectedItem() + "");
+        emprunter.setEtatOuvrage(typeOuvrageCombobox.getSelectedItem() + "");
         emprunter.setDatePret(convertUtilToSql(date1.getSelectedDate().getTime()));
         emprunter.setTypeOuvrage(typeOuvrage.getText());
         emprunter.setDateRetour(convertUtilToSql(date1.getSelectedDate().getTime()));
@@ -144,14 +161,24 @@ public class PretView extends javax.swing.JFrame {
         typeOuvrageCombobox = new javax.swing.JComboBox<>();
         jButton6 = new javax.swing.JButton();
         typeOuvrage = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
+        jPanel11 = new javax.swing.JPanel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        trableAbonnes1 = new javax.swing.JTable();
+        jLabel22 = new javax.swing.JLabel();
+        idRechercheAbonne1 = new javax.swing.JTextField();
+        jPanel13 = new javax.swing.JPanel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        tableFicheAdhrent = new javax.swing.JTable();
+        jButton7 = new javax.swing.JButton();
         jPanel12 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
@@ -180,7 +207,7 @@ public class PretView extends javax.swing.JFrame {
             }
         ));
         trableAbonnes.setRowHeight(23);
-        trableAbonnes.setSelectionBackground(new java.awt.Color(51, 204, 255));
+        trableAbonnes.setSelectionBackground(new java.awt.Color(62, 64, 70));
         trableAbonnes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 trableAbonnesMouseClicked(evt);
@@ -341,6 +368,12 @@ public class PretView extends javax.swing.JFrame {
 
         jPanel21.setBackground(new java.awt.Color(255, 255, 255));
 
+        ISBNRomanRech2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ISBNRomanRech2KeyTyped(evt);
+            }
+        });
+
         jLabel14.setBackground(new java.awt.Color(0, 0, 0));
         jLabel14.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
         jLabel14.setText("ISBN ");
@@ -358,7 +391,7 @@ public class PretView extends javax.swing.JFrame {
             }
         ));
         bandesDTable.setRowHeight(23);
-        bandesDTable.setSelectionBackground(new java.awt.Color(51, 204, 255));
+        bandesDTable.setSelectionBackground(new java.awt.Color(62, 64, 70));
         bandesDTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bandesDTableMouseClicked(evt);
@@ -486,19 +519,28 @@ public class PretView extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nouveau Pret", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe Print", 1, 12))); // NOI18N
 
+        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
+
         jLabel18.setBackground(new java.awt.Color(0, 0, 0));
         jLabel18.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
         jLabel18.setText("Adherent  ");
 
+        adherent1.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
+        adherent1.setForeground(new java.awt.Color(51, 102, 255));
         adherent1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 adherent1ActionPerformed(evt);
             }
         });
 
+        ouvrage1.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
+        ouvrage1.setForeground(new java.awt.Color(51, 102, 255));
+
         jLabel19.setBackground(new java.awt.Color(0, 0, 0));
         jLabel19.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
         jLabel19.setText("Ouvrage ");
+
+        date1.setFieldFont(new java.awt.Font("Script MT Bold", java.awt.Font.BOLD, 14));
 
         jLabel20.setBackground(new java.awt.Color(0, 0, 0));
         jLabel20.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
@@ -537,36 +579,37 @@ public class PretView extends javax.swing.JFrame {
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGap(31, 31, 31)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(adherent1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                                .addComponent(jLabel19)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(typeOuvrage, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(ouvrage1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(adherent1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                        .addComponent(jLabel19)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(typeOuvrage, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ouvrage1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(jLabel20)
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addComponent(jLabel20)
-                                .addGap(18, 18, 18)
-                                .addComponent(date1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(typeOuvrageCombobox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                        .addComponent(date1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(typeOuvrageCombobox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(21, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(249, 249, 249))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addContainerGap(24, Short.MAX_VALUE)
+                .addContainerGap(47, Short.MAX_VALUE)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(adherent1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -580,10 +623,9 @@ public class PretView extends javax.swing.JFrame {
                     .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(typeOuvrageCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(16, 16, 16)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton6)
-                    .addComponent(typeOuvrage, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addComponent(typeOuvrage, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton6))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -630,6 +672,119 @@ public class PretView extends javax.swing.JFrame {
         );
 
         jTabbedPane1.addTab("Nouveau Emprunte ", jPanel2);
+
+        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel11.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Liste des Abonnés", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe Print", 1, 12))); // NOI18N
+        jPanel11.setLayout(null);
+
+        trableAbonnes1.setFont(new java.awt.Font("Segoe Print", 1, 12)); // NOI18N
+        trableAbonnes1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        trableAbonnes1.setRowHeight(23);
+        trableAbonnes1.setSelectionBackground(new java.awt.Color(51, 204, 255));
+        trableAbonnes1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                trableAbonnes1MouseClicked(evt);
+            }
+        });
+        jScrollPane6.setViewportView(trableAbonnes1);
+
+        jPanel11.add(jScrollPane6);
+        jScrollPane6.setBounds(20, 80, 580, 430);
+
+        jLabel22.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel22.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
+        jLabel22.setText("Identifiant");
+        jPanel11.add(jLabel22);
+        jLabel22.setBounds(60, 40, 73, 30);
+
+        idRechercheAbonne1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                idRechercheAbonne1KeyTyped(evt);
+            }
+        });
+        jPanel11.add(idRechercheAbonne1);
+        idRechercheAbonne1.setBounds(146, 40, 200, 30);
+
+        jPanel13.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel13.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Fiche Adherent ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe Print", 1, 12))); // NOI18N
+        jPanel13.setLayout(null);
+
+        tableFicheAdhrent.setFont(new java.awt.Font("Segoe Print", 1, 12)); // NOI18N
+        tableFicheAdhrent.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tableFicheAdhrent.setRowHeight(23);
+        tableFicheAdhrent.setSelectionBackground(new java.awt.Color(51, 204, 255));
+        tableFicheAdhrent.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableFicheAdhrentMouseClicked(evt);
+            }
+        });
+        jScrollPane7.setViewportView(tableFicheAdhrent);
+
+        jPanel13.add(jScrollPane7);
+        jScrollPane7.setBounds(20, 50, 680, 320);
+
+        jButton7.setBackground(new java.awt.Color(255, 255, 255));
+        jButton7.setFont(new java.awt.Font("Segoe Print", 1, 12)); // NOI18N
+        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/design/checked-input-icon-1.png"))); // NOI18N
+        jButton7.setText("Retourner");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, 723, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton7)
+                        .addGap(30, 30, 30))))
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37)
+                        .addComponent(jButton7)))
+                .addContainerGap(32, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Gestion des Retours ", jPanel9);
 
         jPanel1.add(jTabbedPane1);
         jTabbedPane1.setBounds(0, 0, 1360, 610);
@@ -688,16 +843,6 @@ public class PretView extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/design/aceuil_1.png"))); // NOI18N
-        jLabel4.setText("Acceuil");
-        jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel4MouseClicked(evt);
-            }
-        });
-
         jLabel5.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/design/borrow_book_256.png"))); // NOI18N
         jLabel5.setText("Gestion Empruntes  ");
@@ -708,14 +853,23 @@ public class PretView extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/design/exit.png"))); // NOI18N
+        jLabel6.setText("Deconnexion ");
+        jLabel6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel6MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
         jPanel15.setLayout(jPanel15Layout);
         jPanel15Layout.setHorizontalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel15Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
+                .addGap(131, 131, 131)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -723,7 +877,9 @@ public class PretView extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
-                .addContainerGap(479, Short.MAX_VALUE))
+                .addGap(94, 94, 94)
+                .addComponent(jLabel6)
+                .addContainerGap(252, Short.MAX_VALUE))
         );
         jPanel15Layout.setVerticalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -731,8 +887,8 @@ public class PretView extends javax.swing.JFrame {
                 .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel15);
@@ -764,10 +920,6 @@ public class PretView extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_jLabel1MouseClicked
 
-    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel4MouseClicked
-
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jLabel5MouseClicked
@@ -791,6 +943,8 @@ public class PretView extends javax.swing.JFrame {
 
     private void bandesDTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bandesDTableMouseClicked
         // TODO add your handling code here:
+        ouvrage1.setText(bandeDHelper.getSelected().getId());
+        typeOuvrage.setText("BandeDessine");
     }//GEN-LAST:event_bandesDTableMouseClicked
 
     private void livresTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_livresTableMouseClicked
@@ -860,8 +1014,14 @@ public class PretView extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "cet Adherent n'a pas le droit de deppaser 3 Livre !!");
             } else if (res == -2) {
                 JOptionPane.showMessageDialog(null, "cet Adherent n'a pas le droit de deppaser 3 Roman !!");
+            } else if (res == -4) {
+                JOptionPane.showMessageDialog(null, "cet Adherent n'a pas le droit de deppaser 2 Guide de vouyage !!");
             } else {
                 JOptionPane.showMessageDialog(null, "Pret bien Effectuer");
+                bandeDHelper.setList(bandesDService.listBandes());
+                livreHelper.setList(livreService.listLivres());
+                romanHelper.setList(romanService.listRomans());
+                guideHelper.setList(guideService.listGuides());
             }
 
         } catch (Exception ex) {
@@ -869,6 +1029,60 @@ public class PretView extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void trableAbonnes1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_trableAbonnes1MouseClicked
+        try {
+            // TODO add your handling code here:
+            emprunterHelper.setList(emprunteService.ficheAdherent(personneHelper1.getSelected().getId()));
+        } catch (Exception ex) {
+            Logger.getLogger(PretView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_trableAbonnes1MouseClicked
+
+    private void idRechercheAbonne1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_idRechercheAbonne1KeyTyped
+        try {
+
+            personneHelper.setList(personneService.rechercheParId(idRechercheAbonne1.getText()));
+        } catch (Exception ex) {
+            Logger.getLogger(PretView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_idRechercheAbonne1KeyTyped
+
+    private void tableFicheAdhrentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableFicheAdhrentMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tableFicheAdhrentMouseClicked
+
+    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
+        // TODO add your handling code here:
+        ConnexionViews cv = new ConnexionViews();
+        cv.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jLabel6MouseClicked
+
+    private void ISBNRomanRech2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ISBNRomanRech2KeyTyped
+        // TODO add your handling code here:
+
+        try {
+
+            bandeDHelper.setList(bandesDService.findByISBN(ISBNRomanRech2.getText()));
+        } catch (Exception ex) {
+            Logger.getLogger(PretView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_ISBNRomanRech2KeyTyped
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+
+        try {
+            Emprunter e = emprunterHelper.getSelected();
+            e.setRetourner(1);
+            emprunteService.modifierEmprunte(e);
+            emprunterHelper.remove(e);
+        } catch (Exception ex) {
+            Logger.getLogger(PretView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -930,7 +1144,9 @@ public class PretView extends javax.swing.JFrame {
     private datechooser.beans.DateChooserCombo date1;
     private javax.swing.JTable guidesTable;
     private javax.swing.JTextField idRechercheAbonne;
+    private javax.swing.JTextField idRechercheAbonne1;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -942,12 +1158,15 @@ public class PretView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
@@ -960,17 +1179,22 @@ public class PretView extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTable livresTable;
     private javax.swing.JTextField ouvrage1;
     private javax.swing.JTable romansTable;
+    private javax.swing.JTable tableFicheAdhrent;
     private javax.swing.JTable trableAbonnes;
+    private javax.swing.JTable trableAbonnes1;
     private javax.swing.JLabel typeOuvrage;
     private javax.swing.JComboBox<String> typeOuvrageCombobox;
     // End of variables declaration//GEN-END:variables

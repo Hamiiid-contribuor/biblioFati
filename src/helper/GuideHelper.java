@@ -23,6 +23,7 @@ public class GuideHelper extends AbstractHelper<GuideVoyage> {
             new AbstractHelperItem("Titre", "titre"),
             new AbstractHelperItem("Auteur ", "auteur"),
             new AbstractHelperItem("Editeur ", "editeur"),
+            new AbstractHelperItem("Qte Stock ", "quantiteStock"),
             new AbstractHelperItem("Date Edition", "dateEdition"),};
     }
 

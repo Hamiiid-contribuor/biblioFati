@@ -35,7 +35,7 @@ public class LivreService {
         return livreDao.update(livre);
     }
 
-    public List<Livre> rechercheLivres(String isbn, String titre, String auteur, String editeur, String theme) throws Exception {
+    public List<Livre> rechercheLivres(String isbn, String titre, String auteur, String editeur) throws Exception {
 
         String requette = "SELECT  * FROM livre WHERE 1=1 ";
         if (isbn != null && !isbn.equals("")) {
@@ -50,9 +50,7 @@ public class LivreService {
         if (editeur != null && !editeur.equals("")) {
             requette += " AND editeur like '" + editeur + "%'";
         }
-        if (theme != null && !theme.equals("")) {
-            requette += " AND theme like '" + theme + "%'";
-        }
+       
 
         return livreDao.load(requette);
     }

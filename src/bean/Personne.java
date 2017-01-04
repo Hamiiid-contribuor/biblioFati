@@ -209,4 +209,11 @@ public class Personne {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "Personne{" + "id=" + id + ", login=" + login + ", password=" + password + ", nom=" + nom + ", prenom=" + prenom + ", adresse=" + adresse + ", email=" + email + ", telephone=" + telephone + ", photo=" + photo + ", type=" + type + ", nbrRomanEmprunter=" + nbrRomanEmprunter + ", nbrLivreEmprunter=" + nbrLivreEmprunter + ", nbrBandeDesinesEmprunter=" + nbrBandeDesinesEmprunter + ", nbrTotaleEmprunte=" + nbrTotaleEmprunte + '}';
+    }
+
+    
+    
 }

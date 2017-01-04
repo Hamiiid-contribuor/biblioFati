@@ -24,9 +24,9 @@ public class LivreHelper  extends AbstractHelper<Livre> {
             new AbstractHelperItem(" ISBN ","id"),
             new AbstractHelperItem("Titre","titre"),
             new AbstractHelperItem("Auteur ","auteur"),
+            new AbstractHelperItem("Qte Stock ", "quantiteStock"),
             new AbstractHelperItem("Editeur ","editeur"),
             new AbstractHelperItem(" Date Edition  ","dateEdition"),
-            new AbstractHelperItem("Theme ","theme"),
          
         
         };

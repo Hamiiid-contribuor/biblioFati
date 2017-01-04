@@ -14,6 +14,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import service.PersonneService;
+import util.Session;
 
 /**
  *
@@ -29,6 +30,12 @@ public class AbonnemetView extends javax.swing.JFrame {
     public void initParam() throws Exception {
         this.setExtendedState(Frame.MAXIMIZED_BOTH);
         personneHelper = new PersonneHelper(trableAbonnes, personneService.listAdherent());
+        jPanel6.setVisible(false);
+
+        Personne connectedPersonne = (Personne) Session.getAttribut("loadedPersonne");
+       if(connectedPersonne.getType().equals("Assistant")){
+            jLabel3.setVisible(false);
+        }
     }
 
     //la methode qui affiche les detail  d'une personne 
@@ -61,6 +68,7 @@ public class AbonnemetView extends javax.swing.JFrame {
         nomUtilisateur.setText("");
 
         initParam();
+        idTextField.setEnabled(true);
     }
 
     //methode qui recupere les donnes saisie par l'utilisateur 
@@ -79,7 +87,7 @@ public class AbonnemetView extends javax.swing.JFrame {
         personne.setPhoto(path);
         personne.setLogin(nomUtilisateur.getText());
         personne.setPassword(motdePasse.getText());
-        
+
         personne.setNbrBandeDesinesEmprunter(0);
         personne.setNbrLivreEmprunter(0);
         personne.setNbrRomanEmprunter(0);
@@ -99,9 +107,8 @@ public class AbonnemetView extends javax.swing.JFrame {
         personne.setAdresse(adresseTextField.getText());
         personne.setTelephone(telTextField.getText());
         personne.setEmail(emailTextField1.getText());
-        //personne.setPhoto(imageLabel.getIcon());
-        personne.setLogin(null);
-        personne.setPassword(null);
+        personne.setLogin(nomUtilisateur.getText());
+        personne.setPassword(motdePasse.getText());
 
         return personne;
     }
@@ -181,14 +188,12 @@ public class AbonnemetView extends javax.swing.JFrame {
         jButton6 = new javax.swing.JButton();
         jButton14 = new javax.swing.JButton();
         jButton15 = new javax.swing.JButton();
-        jButton16 = new javax.swing.JButton();
-        jButton17 = new javax.swing.JButton();
         jPanel15 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
@@ -323,11 +328,11 @@ public class AbonnemetView extends javax.swing.JFrame {
 
         nomUtilisateur.setBackground(new java.awt.Color(0, 0, 0));
         nomUtilisateur.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
-        nomUtilisateur.setForeground(new java.awt.Color(255, 255, 255));
+        nomUtilisateur.setForeground(new java.awt.Color(0, 0, 255));
 
         motdePasse.setBackground(new java.awt.Color(0, 0, 0));
         motdePasse.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
-        motdePasse.setForeground(new java.awt.Color(255, 255, 255));
+        motdePasse.setForeground(new java.awt.Color(0, 0, 255));
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -386,7 +391,7 @@ public class AbonnemetView extends javax.swing.JFrame {
             }
         ));
         trableAbonnes.setRowHeight(30);
-        trableAbonnes.setSelectionBackground(new java.awt.Color(51, 204, 255));
+        trableAbonnes.setSelectionBackground(new java.awt.Color(62, 64, 70));
         trableAbonnes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 trableAbonnesMouseClicked(evt);
@@ -586,36 +591,6 @@ public class AbonnemetView extends javax.swing.JFrame {
         jPanel5.add(jButton15);
         jButton15.setBounds(355, 10, 80, 59);
 
-        jButton16.setBackground(new java.awt.Color(255, 255, 255));
-        jButton16.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/design/lassst.png"))); // NOI18N
-        jButton16.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton16.setOpaque(false);
-        jButton16.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-        jButton16.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton16.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton16ActionPerformed(evt);
-            }
-        });
-        jPanel5.add(jButton16);
-        jButton16.setBounds(530, 10, 75, 59);
-
-        jButton17.setBackground(new java.awt.Color(255, 255, 255));
-        jButton17.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/design/firsst.png"))); // NOI18N
-        jButton17.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton17.setOpaque(false);
-        jButton17.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-        jButton17.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton17.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton17ActionPerformed(evt);
-            }
-        });
-        jPanel5.add(jButton17);
-        jButton17.setBounds(445, 10, 80, 59);
-
         getContentPane().add(jPanel5);
         jPanel5.setBounds(0, 50, 1400, 80);
 
@@ -646,11 +621,6 @@ public class AbonnemetView extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/design/aceuil_1.png"))); // NOI18N
-        jLabel4.setText("Acceuil");
-        jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
         jLabel13.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
         jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/design/borrow_book_256.png"))); // NOI18N
         jLabel13.setText("Gestion Empruntes  ");
@@ -661,14 +631,23 @@ public class AbonnemetView extends javax.swing.JFrame {
             }
         });
 
+        jLabel14.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/design/exit.png"))); // NOI18N
+        jLabel14.setText("Deconnexion ");
+        jLabel14.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel14.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel14MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
         jPanel15.setLayout(jPanel15Layout);
         jPanel15Layout.setHorizontalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel15Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(125, 125, 125)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -676,7 +655,9 @@ public class AbonnemetView extends javax.swing.JFrame {
                 .addComponent(jLabel13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
-                .addContainerGap(499, Short.MAX_VALUE))
+                .addGap(130, 130, 130)
+                .addComponent(jLabel14)
+                .addContainerGap(236, Short.MAX_VALUE))
         );
         jPanel15Layout.setVerticalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -684,8 +665,8 @@ public class AbonnemetView extends javax.swing.JFrame {
                 .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
-                .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel15);
@@ -719,13 +700,21 @@ public class AbonnemetView extends javax.swing.JFrame {
 
         try {
             if (personneHelper.getSelected() != null) {
-                int res = personneService.modifiererPersonne(recupParamForMod());
-                //ci la personne est bien modifier 
+                Personne personneToModifie = recupParamForMod();
+                personneToModifie.setType(personneHelper.getSelected().getType());
+                personneToModifie.setPhoto(personneHelper.getSelected().getPhoto());
+                personneToModifie.setNbrBandeDesinesEmprunter(personneHelper.getSelected().getNbrBandeDesinesEmprunter());
+                personneToModifie.setNbrLivreEmprunter(personneHelper.getSelected().getNbrLivreEmprunter());
+                personneToModifie.setNbrRomanEmprunter(personneHelper.getSelected().getNbrRomanEmprunter());
+                personneToModifie.setNbrTotaleEmprunte(personneHelper.getSelected().getNbrTotaleEmprunte());
+
+                System.out.println("ha lpersonne lighadi ytseft el base -->" + personneToModifie);
+
+                int res = personneService.modifiererPersonne(personneToModifie);
                 if (res == 1) {
-                    personneHelper.update(recupParamForMod());
+                    personneHelper.update(personneToModifie);
                     JOptionPane.showMessageDialog(null, "Abonne modifier avec Succes ");
                 }
-
             } else {
                 JOptionPane.showMessageDialog(null, "vous selectionnez l'abonne a Modifier !!");
             }
@@ -801,20 +790,10 @@ public class AbonnemetView extends javax.swing.JFrame {
 
     }//GEN-LAST:event_parcourirActionPerformed
 
-    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
-
-
-    }//GEN-LAST:event_jButton16ActionPerformed
-
-    private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
-
-        trableAbonnes.setRowSelectionInterval(0, 0);
-
-    }//GEN-LAST:event_jButton17ActionPerformed
-
     private void trableAbonnesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_trableAbonnesMouseClicked
         // TODO add your handling code here:
         showParam(personneHelper.getSelected());
+        idTextField.setEnabled(false);
     }//GEN-LAST:event_trableAbonnesMouseClicked
 
     private void idTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_idTextFieldFocusGained
@@ -857,6 +836,13 @@ public class AbonnemetView extends javax.swing.JFrame {
         pv.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jLabel13MouseClicked
+
+    private void jLabel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseClicked
+        // TODO add your handling code here:
+        ConnexionViews cv = new ConnexionViews();
+        cv.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jLabel14MouseClicked
 
     /**
      * @param args the command line arguments
@@ -905,8 +891,6 @@ public class AbonnemetView extends javax.swing.JFrame {
     private javax.swing.JLabel imageLabel;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
-    private javax.swing.JButton jButton16;
-    private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
@@ -915,6 +899,7 @@ public class AbonnemetView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
@@ -922,7 +907,6 @@ public class AbonnemetView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;

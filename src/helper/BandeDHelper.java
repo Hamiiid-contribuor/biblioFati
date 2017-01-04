@@ -23,6 +23,7 @@ public class BandeDHelper extends AbstractHelper<BandeDessine> {
             new AbstractHelperItem("Titre", "titre"),
             new AbstractHelperItem("Auteur ", "auteur"),
             new AbstractHelperItem("Couleur ", "couleur"),
+            new AbstractHelperItem("Qte Stock ", "quantiteStock"),
             new AbstractHelperItem("Collection", "collection"),};
     }
 

@@ -1,8 +1,10 @@
 package view;
 
+import bean.BandeDessine;
 import bean.GuideVoyage;
 import bean.Livre;
 import bean.Ouvrage;
+import bean.Personne;
 import bean.Revus;
 import bean.Roman;
 import helper.BandeDHelper;
@@ -27,6 +29,7 @@ import service.LivreService;
 import service.RevusService;
 import service.RomanService;
 import service.GuideService;
+import util.Session;
 
 /**
  *
@@ -57,6 +60,18 @@ public class OuvragesView extends javax.swing.JFrame {
         bandeDHelper = new BandeDHelper(bandesDTable, bandesDService.listBandes());
         guideHelper = new GuideHelper(guidesTable, guideService.listGuides());
         panelInfoSupLivre.setVisible(false);
+
+       
+        Personne connectedPersonne = (Personne) Session.getAttribut("loadedPersonne");
+        System.out.println("ha l'utilisateur connecte men ouvrage view "+connectedPersonne);
+        System.out.println("ha type dial l'utilisateur connecte men ouvrage view "+connectedPersonne.getType());
+        if(connectedPersonne.getType().equals("Assistant")){
+            System.out.println("rah kaydkhel  el if");
+            jLabel3.setVisible(false);
+            jButton4.setEnabled(false);
+            jButton5.setEnabled(false);
+            jButton6.setEnabled(false);
+        }
 
     }
 
@@ -114,6 +129,20 @@ public class OuvragesView extends javax.swing.JFrame {
         return ouvrage;
     }
 
+    //recuperer les paramettres saisie par l'utilisateur
+    public Ouvrage getParamMod() {
+
+        Ouvrage ouvrage = new Ouvrage();
+        ouvrage.setId(isbnTextField.getText());
+        ouvrage.setTitre(titreTextField.getText());
+        ouvrage.setAuteur(auteurTextField.getText());
+        ouvrage.setEditeur(editeurTextField.getText());
+        ouvrage.setDateEdition(convertUtilToSql(dateEditionSchooser.getSelectedDate().getTime()));
+        ouvrage.setQuantiteStock(new Integer(quantiteTextField.getText()));
+
+        return ouvrage;
+    }
+
     //constructeur  
     public OuvragesView() {
         this.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -156,8 +185,15 @@ public class OuvragesView extends javax.swing.JFrame {
         dateEditionSchooser = new datechooser.beans.DateChooserCombo();
         quantiteTextField = new javax.swing.JTextField();
         panelInfoSupLivre = new javax.swing.JPanel();
-        jLabel16 = new javax.swing.JLabel();
-        themeLivreCombobox = new javax.swing.JComboBox<>();
+        scenario = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
+        jLabel26 = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
+        couleur = new javax.swing.JTextField();
+        jLabel28 = new javax.swing.JLabel();
+        dessin = new javax.swing.JTextField();
+        jLabel29 = new javax.swing.JLabel();
+        collection = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel6 = new javax.swing.JPanel();
@@ -186,8 +222,6 @@ public class OuvragesView extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         editeurRomanRech4 = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
-        jLabel21 = new javax.swing.JLabel();
-        themeLivreRech4 = new javax.swing.JComboBox<>();
         jPanel13 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -205,13 +239,13 @@ public class OuvragesView extends javax.swing.JFrame {
         jPanel21 = new javax.swing.JPanel();
         jPanel22 = new javax.swing.JPanel();
         jLabel30 = new javax.swing.JLabel();
-        jTextField25 = new javax.swing.JTextField();
+        bandeIsbnRech = new javax.swing.JTextField();
         jLabel31 = new javax.swing.JLabel();
         jLabel32 = new javax.swing.JLabel();
-        jTextField26 = new javax.swing.JTextField();
-        jTextField27 = new javax.swing.JTextField();
+        bandeAuteurRech = new javax.swing.JTextField();
+        bandeTitreRech = new javax.swing.JTextField();
         jLabel33 = new javax.swing.JLabel();
-        jTextField28 = new javax.swing.JTextField();
+        bandeEditeurRech = new javax.swing.JTextField();
         jPanel23 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         bandesDTable = new javax.swing.JTable();
@@ -236,14 +270,12 @@ public class OuvragesView extends javax.swing.JFrame {
         jButton6 = new javax.swing.JButton();
         jButton14 = new javax.swing.JButton();
         jButton15 = new javax.swing.JButton();
-        jButton16 = new javax.swing.JButton();
-        jButton17 = new javax.swing.JButton();
         jPanel15 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
@@ -411,14 +443,23 @@ public class OuvragesView extends javax.swing.JFrame {
     quantiteTextField.setBounds(27, 336, 258, 28);
 
     panelInfoSupLivre.setBackground(new java.awt.Color(255, 255, 255));
-    panelInfoSupLivre.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Infos suplementaire sur le livre ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe Print", 1, 10))); // NOI18N
+    panelInfoSupLivre.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Infos suplementaire sur le bande_dessine", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe Print", 1, 10))); // NOI18N
 
-    jLabel16.setBackground(new java.awt.Color(0, 0, 0));
-    jLabel16.setFont(new java.awt.Font("Segoe Print", 1, 12)); // NOI18N
-    jLabel16.setText("Theme ");
+    jLabel26.setBackground(new java.awt.Color(0, 0, 0));
+    jLabel26.setFont(new java.awt.Font("Segoe Print", 1, 12)); // NOI18N
+    jLabel26.setText("Scenario");
 
-    themeLivreCombobox.setFont(new java.awt.Font("Segoe Print", 1, 11)); // NOI18N
-    themeLivreCombobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--selectionner--", "Histoire", "Art", "Culture" }));
+    jLabel27.setBackground(new java.awt.Color(0, 0, 0));
+    jLabel27.setFont(new java.awt.Font("Segoe Print", 1, 12)); // NOI18N
+    jLabel27.setText("Couleur ");
+
+    jLabel28.setBackground(new java.awt.Color(0, 0, 0));
+    jLabel28.setFont(new java.awt.Font("Segoe Print", 1, 12)); // NOI18N
+    jLabel28.setText("Dessin");
+
+    jLabel29.setBackground(new java.awt.Color(0, 0, 0));
+    jLabel29.setFont(new java.awt.Font("Segoe Print", 1, 12)); // NOI18N
+    jLabel29.setText("collection ");
 
     javax.swing.GroupLayout panelInfoSupLivreLayout = new javax.swing.GroupLayout(panelInfoSupLivre);
     panelInfoSupLivre.setLayout(panelInfoSupLivreLayout);
@@ -426,22 +467,51 @@ public class OuvragesView extends javax.swing.JFrame {
         panelInfoSupLivreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(panelInfoSupLivreLayout.createSequentialGroup()
             .addGap(24, 24, 24)
-            .addComponent(jLabel16)
-            .addGap(10, 10, 10)
-            .addComponent(themeLivreCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(panelInfoSupLivreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelInfoSupLivreLayout.createSequentialGroup()
+                    .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(10, 10, 10)
+                    .addGroup(panelInfoSupLivreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(scenario, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(panelInfoSupLivreLayout.createSequentialGroup()
+                    .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(couleur, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGap(36, 36, 36)
+            .addGroup(panelInfoSupLivreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelInfoSupLivreLayout.createSequentialGroup()
+                    .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(10, 10, 10)
+                    .addComponent(dessin, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(panelInfoSupLivreLayout.createSequentialGroup()
+                    .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(collection, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGap(44, 44, 44))
     );
     panelInfoSupLivreLayout.setVerticalGroup(
         panelInfoSupLivreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(panelInfoSupLivreLayout.createSequentialGroup()
-            .addGap(15, 15, 15)
-            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
-        .addGroup(panelInfoSupLivreLayout.createSequentialGroup()
-            .addGap(11, 11, 11)
-            .addComponent(themeLivreCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addContainerGap()
+            .addGroup(panelInfoSupLivreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(dessin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelInfoSupLivreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel26, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(scenario, javax.swing.GroupLayout.Alignment.LEADING))
+                .addComponent(jLabel28))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGroup(panelInfoSupLivreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(couleur, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
+                .addComponent(collection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGap(37, 37, 37))
     );
 
     jPanel2.add(panelInfoSupLivre);
-    panelInfoSupLivre.setBounds(27, 443, 550, 90);
+    panelInfoSupLivre.setBounds(30, 430, 550, 130);
 
     jPanel1.add(jPanel2);
     jPanel2.setBounds(10, 0, 600, 570);
@@ -545,7 +615,7 @@ public class OuvragesView extends javax.swing.JFrame {
     tableRomans.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     tableRomans.setIntercellSpacing(new java.awt.Dimension(1, 2));
     tableRomans.setRowHeight(30);
-    tableRomans.setSelectionBackground(new java.awt.Color(51, 204, 255));
+    tableRomans.setSelectionBackground(new java.awt.Color(62, 64, 70));
     tableRomans.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
     tableRomans.addMouseListener(new java.awt.event.MouseAdapter() {
         public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -612,6 +682,7 @@ public class OuvragesView extends javax.swing.JFrame {
         }
     ));
     tableLivres.setRowHeight(30);
+    tableLivres.setSelectionBackground(new java.awt.Color(62, 64, 70));
     tableLivres.addMouseListener(new java.awt.event.MouseAdapter() {
         public void mouseClicked(java.awt.event.MouseEvent evt) {
             tableLivresMouseClicked(evt);
@@ -625,7 +696,7 @@ public class OuvragesView extends javax.swing.JFrame {
         jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(jPanel10Layout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
+            .addComponent(jScrollPane2)
             .addContainerGap())
     );
     jPanel10Layout.setVerticalGroup(
@@ -661,40 +732,29 @@ public class OuvragesView extends javax.swing.JFrame {
     jLabel20.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
     jLabel20.setText("Editeur ");
 
-    jLabel21.setBackground(new java.awt.Color(0, 0, 0));
-    jLabel21.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
-    jLabel21.setText("Theme ");
-
-    themeLivreRech4.setFont(new java.awt.Font("Segoe Print", 1, 11)); // NOI18N
-    themeLivreRech4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--selectionner--", "Histoire", "Art", "Culture" }));
-
     javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
     jPanel11.setLayout(jPanel11Layout);
     jPanel11Layout.setHorizontalGroup(
         jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
             .addContainerGap()
-            .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                 .addGroup(jPanel11Layout.createSequentialGroup()
                     .addComponent(jLabel18)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(auteurRomanRech4, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(33, 33, 33)
-                    .addComponent(jLabel20)
-                    .addGap(18, 18, 18)
-                    .addComponent(editeurRomanRech4))
+                    .addComponent(auteurRomanRech4, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel11Layout.createSequentialGroup()
                     .addComponent(jLabel17)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(ISBNRomanRech4)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jLabel19)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(titreRomanRech4, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jLabel21)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(themeLivreRech4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGap(18, 18, 18)
+                    .addComponent(ISBNRomanRech4)))
+            .addGap(33, 33, 33)
+            .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jLabel20)
+                .addComponent(jLabel19))
+            .addGap(18, 18, 18)
+            .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(editeurRomanRech4, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
+                .addComponent(titreRomanRech4))
             .addContainerGap())
     );
     jPanel11Layout.setVerticalGroup(
@@ -704,9 +764,7 @@ public class OuvragesView extends javax.swing.JFrame {
             .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(titreRomanRech4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(themeLivreRech4, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(titreRomanRech4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ISBNRomanRech4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -762,6 +820,7 @@ public class OuvragesView extends javax.swing.JFrame {
         }
     ));
     revusTable.setRowHeight(30);
+    revusTable.setSelectionBackground(new java.awt.Color(62, 64, 70));
     revusTable.addMouseListener(new java.awt.event.MouseAdapter() {
         public void mouseClicked(java.awt.event.MouseEvent evt) {
             revusTableMouseClicked(evt);
@@ -907,29 +966,25 @@ public class OuvragesView extends javax.swing.JFrame {
     jPanel22Layout.setHorizontalGroup(
         jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(jPanel22Layout.createSequentialGroup()
+            .addGap(52, 52, 52)
             .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel22Layout.createSequentialGroup()
-                    .addGap(52, 52, 52)
                     .addComponent(jLabel31)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(jTextField26, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bandeAuteurRech, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(18, 18, 18)
                     .addComponent(jLabel33))
                 .addGroup(jPanel22Layout.createSequentialGroup()
-                    .addGap(121, 121, 121)
-                    .addComponent(jTextField25, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel30)
+                    .addGap(29, 29, 29)
+                    .addComponent(bandeIsbnRech, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(18, 18, 18)
                     .addComponent(jLabel32)))
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                .addComponent(jTextField27, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
-                .addComponent(jTextField28))
+                .addComponent(bandeTitreRech, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+                .addComponent(bandeEditeurRech))
             .addContainerGap(32, Short.MAX_VALUE))
-        .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel22Layout.createSequentialGroup()
-                .addGap(51, 51, 51)
-                .addComponent(jLabel30)
-                .addContainerGap(569, Short.MAX_VALUE)))
     );
     jPanel22Layout.setVerticalGroup(
         jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -937,22 +992,18 @@ public class OuvragesView extends javax.swing.JFrame {
             .addGap(16, 16, 16)
             .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jTextField25, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jTextField27, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(bandeIsbnRech, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(bandeTitreRech, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGap(20, 20, 20)
             .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField28, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bandeEditeurRech, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField26, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bandeAuteurRech, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel22Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(49, Short.MAX_VALUE)))
     );
 
     jPanel23.setBackground(new java.awt.Color(255, 255, 255));
@@ -971,6 +1022,7 @@ public class OuvragesView extends javax.swing.JFrame {
         }
     ));
     bandesDTable.setRowHeight(30);
+    bandesDTable.setSelectionBackground(new java.awt.Color(62, 64, 70));
     bandesDTable.addMouseListener(new java.awt.event.MouseAdapter() {
         public void mouseClicked(java.awt.event.MouseEvent evt) {
             bandesDTableMouseClicked(evt);
@@ -1047,6 +1099,7 @@ public class OuvragesView extends javax.swing.JFrame {
         }
     ));
     guidesTable.setRowHeight(30);
+    guidesTable.setSelectionBackground(new java.awt.Color(62, 64, 70));
     guidesTable.addMouseListener(new java.awt.event.MouseAdapter() {
         public void mouseClicked(java.awt.event.MouseEvent evt) {
             guidesTableMouseClicked(evt);
@@ -1168,7 +1221,7 @@ public class OuvragesView extends javax.swing.JFrame {
     jPanel17.setLayout(jPanel17Layout);
     jPanel17Layout.setHorizontalGroup(
         jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, 676, Short.MAX_VALUE)
+        .addComponent(jPanel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
     );
     jPanel17Layout.setVerticalGroup(
         jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1269,32 +1322,6 @@ public class OuvragesView extends javax.swing.JFrame {
         }
     });
 
-    jButton16.setBackground(new java.awt.Color(255, 255, 255));
-    jButton16.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-    jButton16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/design/lassst.png"))); // NOI18N
-    jButton16.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-    jButton16.setOpaque(false);
-    jButton16.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-    jButton16.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-    jButton16.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            jButton16ActionPerformed(evt);
-        }
-    });
-
-    jButton17.setBackground(new java.awt.Color(255, 255, 255));
-    jButton17.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-    jButton17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/design/firsst.png"))); // NOI18N
-    jButton17.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-    jButton17.setOpaque(false);
-    jButton17.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-    jButton17.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-    jButton17.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            jButton17ActionPerformed(evt);
-        }
-    });
-
     javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
     jPanel5.setLayout(jPanel5Layout);
     jPanel5Layout.setHorizontalGroup(
@@ -1310,11 +1337,7 @@ public class OuvragesView extends javax.swing.JFrame {
             .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(jButton15, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jButton17, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jButton16, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(821, Short.MAX_VALUE))
+            .addContainerGap(983, Short.MAX_VALUE))
     );
     jPanel5Layout.setVerticalGroup(
         jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1326,9 +1349,7 @@ public class OuvragesView extends javax.swing.JFrame {
                     .addComponent(jButton5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton14, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton15, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton17, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton16, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jButton15, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
@@ -1364,11 +1385,6 @@ public class OuvragesView extends javax.swing.JFrame {
         }
     });
 
-    jLabel4.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
-    jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/design/aceuil_1.png"))); // NOI18N
-    jLabel4.setText("Acceuil");
-    jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
     jLabel22.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
     jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/design/borrow_book_256.png"))); // NOI18N
     jLabel22.setText("Gestion Empruntes  ");
@@ -1379,14 +1395,23 @@ public class OuvragesView extends javax.swing.JFrame {
         }
     });
 
+    jLabel24.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
+    jLabel24.setForeground(new java.awt.Color(255, 0, 0));
+    jLabel24.setIcon(new javax.swing.ImageIcon(getClass().getResource("/design/exit.png"))); // NOI18N
+    jLabel24.setText("Deconnexion ");
+    jLabel24.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    jLabel24.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            jLabel24MouseClicked(evt);
+        }
+    });
+
     javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
     jPanel15.setLayout(jPanel15Layout);
     jPanel15Layout.setHorizontalGroup(
         jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(jPanel15Layout.createSequentialGroup()
-            .addContainerGap()
-            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGap(125, 125, 125)
             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1394,7 +1419,9 @@ public class OuvragesView extends javax.swing.JFrame {
             .addComponent(jLabel22)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(jLabel3)
-            .addContainerGap(511, Short.MAX_VALUE))
+            .addGap(151, 151, 151)
+            .addComponent(jLabel24)
+            .addContainerGap(227, Short.MAX_VALUE))
     );
     jPanel15Layout.setVerticalGroup(
         jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1402,8 +1429,8 @@ public class OuvragesView extends javax.swing.JFrame {
             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
-            .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel24))
     );
 
     getContentPane().add(jPanel15);
@@ -1452,7 +1479,6 @@ public class OuvragesView extends javax.swing.JFrame {
             livre.setDateEdition(ouvrage.getDateEdition());
             livre.setQuantiteStock(ouvrage.getQuantiteStock());
             livre.setCouverture(ouvrage.getCouverture());
-            livre.setTheme(themeLivreCombobox.getSelectedItem() + "");
 
             try {
                 if (livre != null) {
@@ -1494,6 +1520,37 @@ public class OuvragesView extends javax.swing.JFrame {
                 Logger.getLogger(OuvragesView.class.getName()).log(Level.SEVERE, null, ex);
             }
 
+        } else if (typeOuvrage.equals("Bande dessinee")) {
+
+            BandeDessine bandeDessine = new BandeDessine();
+
+            bandeDessine.setId(ouvrage.getId());
+            bandeDessine.setTitre(ouvrage.getTitre());
+            bandeDessine.setAuteur(ouvrage.getAuteur());
+            bandeDessine.setEditeur(ouvrage.getEditeur());
+            bandeDessine.setDateEdition(ouvrage.getDateEdition());
+            bandeDessine.setQuantiteStock(ouvrage.getQuantiteStock());
+            bandeDessine.setCouverture(ouvrage.getCouverture());
+            //
+            bandeDessine.setCollection(collection.getText());
+            bandeDessine.setCouleur(couleur.getText());
+            bandeDessine.setScenaroi(scenario.getText());
+            bandeDessine.setDessin(dessin.getText());
+
+            try {
+                if (bandeDessine != null) {
+                    int res = bandesDService.ajouterBande(bandeDessine);
+                    if (res == 1) {
+                        bandeDHelper.save(bandeDessine);
+                        JOptionPane.showMessageDialog(null, "Bande Dessinee bien Ajouter ");
+                    }
+                }
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "ISBN deja existe ");
+                Logger.getLogger(OuvragesView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         } else if (typeOuvrage.equals("Guide de voyage")) {
 
             GuideVoyage guideVoyage = new GuideVoyage();
@@ -1527,21 +1584,30 @@ public class OuvragesView extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         try {
+
             if (jTabbedPane2.getSelectedIndex() == 0) {
                 if (romanHelper.getSelected() != null) {
-                    Roman roman = romanHelper.getSelected();
-                    roman.setId(getParam().getId());
-                    roman.setTitre(getParam().getTitre());
-                    roman.setEditeur(getParam().getEditeur());
-                    roman.setDateEdition(getParam().getDateEdition());
-                    roman.setCouverture(getParam().getCouverture());
-                    roman.setQuantiteStock(getParam().getQuantiteStock());
 
-                    int res = romanService.modifierRoman(roman);
+                    Roman romanToModify = new Roman();
 
-                    if (res == 1) {
-                        JOptionPane.showMessageDialog(null, "Roman bien modifier ");
-                        romanHelper.update(roman);
+                    romanToModify.setId(getParamMod().getId());
+                    romanToModify.setTitre(getParamMod().getTitre());
+                    romanToModify.setAuteur(getParamMod().getAuteur());
+                    romanToModify.setEditeur(getParamMod().getEditeur());
+                    romanToModify.setDateEdition(getParamMod().getDateEdition());
+                    romanToModify.setCouverture(getParamMod().getCouverture());
+                    romanToModify.setQuantiteStock(getParamMod().getQuantiteStock());
+                    romanToModify.setCouverture(romanHelper.getSelected().getCouverture());
+
+                    int p = JOptionPane.showConfirmDialog(null, "Vous Voulez Vraiment Modifier Ce Roman ??", "Confirm", JOptionPane.YES_NO_OPTION);
+                    if (p == 0) {
+                        int res = romanService.modifierRoman(romanToModify);
+
+                        if (res == 1) {
+                            JOptionPane.showMessageDialog(null, "Roman bien modifier ");
+                            romanHelper.update(romanToModify);
+                        }
+
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Priere de selectionez l'ouvrage a Modifier ", "Info", JOptionPane.INFORMATION_MESSAGE);
@@ -1549,13 +1615,27 @@ public class OuvragesView extends javax.swing.JFrame {
             } else if (jTabbedPane2.getSelectedIndex() == 1) {
 
                 if (livreHelper.getSelected() != null) {
+
+                    Livre livreToModify = new Livre();
+
+                    livreToModify.setId(getParamMod().getId());
+                    livreToModify.setTitre(getParamMod().getTitre());
+                    livreToModify.setAuteur(getParamMod().getAuteur());
+                    livreToModify.setEditeur(getParamMod().getEditeur());
+                    livreToModify.setDateEdition(getParamMod().getDateEdition());
+                    livreToModify.setCouverture(getParamMod().getCouverture());
+                    livreToModify.setQuantiteStock(getParamMod().getQuantiteStock());
+                    livreToModify.setCouverture(livreHelper.getSelected().getCouverture());
+
                     int p = JOptionPane.showConfirmDialog(null, "Vous Voulez Vraiment Modifier Ce Livre ??", "Confirm", JOptionPane.YES_NO_OPTION);
                     if (p == 0) {
-                        int res = livreService.modifierLivre(livreHelper.getSelected());
-                        if (res > 0) {
-                            JOptionPane.showMessageDialog(null, "Livre Bien Modifier ", "Info", JOptionPane.INFORMATION_MESSAGE);
-                            livreHelper.update(livreHelper.getSelected());
+                        int res = livreService.modifierLivre(livreToModify);
+
+                        if (res == 1) {
+                            JOptionPane.showMessageDialog(null, "Roman bien modifier ");
+                            livreHelper.update(livreToModify);
                         }
+
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Priere de selectionez l'ouvrage a Modifier ", "Info", JOptionPane.INFORMATION_MESSAGE);
@@ -1563,31 +1643,87 @@ public class OuvragesView extends javax.swing.JFrame {
             } else if (jTabbedPane2.getSelectedIndex() == 2) {
 
                 if (revusHelper.getSelected() != null) {
-                    int p = JOptionPane.showConfirmDialog(null, "Vous Voulez Vraiment Supprimer Ce Revus ??", "Confirm", JOptionPane.YES_NO_OPTION);
+
+                    Revus revusToModify = new Revus();
+
+                    revusToModify.setId(getParamMod().getId());
+                    revusToModify.setTitre(getParamMod().getTitre());
+                    revusToModify.setAuteur(getParamMod().getAuteur());
+                    revusToModify.setEditeur(getParamMod().getEditeur());
+                    revusToModify.setDateEdition(getParamMod().getDateEdition());
+                    revusToModify.setCouverture(getParamMod().getCouverture());
+                    revusToModify.setQuantiteStock(getParamMod().getQuantiteStock());
+                    revusToModify.setCouverture(revusHelper.getSelected().getCouverture());
+
+                    int p = JOptionPane.showConfirmDialog(null, "Vous Voulez Vraiment Modifier Ce Revus ??", "Confirm", JOptionPane.YES_NO_OPTION);
                     if (p == 0) {
-                        int res = revusService.supprimerRevus(revusHelper.getSelected());
-                        if (res > 0) {
-                            JOptionPane.showMessageDialog(null, "Revus Bien Supprimer ", "Info", JOptionPane.INFORMATION_MESSAGE);
-                            revusHelper.remove(revusHelper.getSelected());
+                        int res = revusService.modifierRevus(revusToModify);
+
+                        if (res == 1) {
+                            JOptionPane.showMessageDialog(null, "Revus bien modifier ");
+                            revusHelper.update(revusToModify);
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Priere de selectionez l'ouvrage a Modifier ", "Info", JOptionPane.INFORMATION_MESSAGE);
+
                     }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Priere de selectionez l'ouvrage a Modifier ", "Info", JOptionPane.INFORMATION_MESSAGE);
                 }
+
             } else if (jTabbedPane2.getSelectedIndex() == 3) {
+
+                if (bandeDHelper.getSelected() != null) {
+
+                    BandeDessine bandeToModify = new BandeDessine();
+
+                    bandeToModify.setId(getParamMod().getId());
+                    bandeToModify.setTitre(getParamMod().getTitre());
+                    bandeToModify.setAuteur(getParamMod().getAuteur());
+                    bandeToModify.setEditeur(getParamMod().getEditeur());
+                    bandeToModify.setDateEdition(getParamMod().getDateEdition());
+                    bandeToModify.setCouverture(getParamMod().getCouverture());
+                    bandeToModify.setQuantiteStock(getParamMod().getQuantiteStock());
+                    bandeToModify.setCouverture(bandeDHelper.getSelected().getCouverture());
+
+                    int p = JOptionPane.showConfirmDialog(null, "Vous Voulez Vraiment Modifier Ce Bande Dessinee ??", "Confirm", JOptionPane.YES_NO_OPTION);
+                    if (p == 0) {
+                        int res = bandesDService.modifierBandeD(bandeToModify);
+
+                        if (res == 1) {
+                            JOptionPane.showMessageDialog(null, "Bande Dessinee bien modifier ");
+                            bandeDHelper.update(bandeToModify);
+                        }
+
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Priere de selectionez l'ouvrage a Modifier ", "Info", JOptionPane.INFORMATION_MESSAGE);
+                }
 
             } else if (jTabbedPane2.getSelectedIndex() == 4) {
                 if (guideHelper.getSelected() != null) {
-                    int p = JOptionPane.showConfirmDialog(null, "Vous Voulez Vraiment Supprimer Ce Guide ??", "Confirm", JOptionPane.YES_NO_OPTION);
+
+                    GuideVoyage guideToModify = new GuideVoyage();
+
+                    guideToModify.setId(getParamMod().getId());
+                    guideToModify.setTitre(getParamMod().getTitre());
+                    guideToModify.setAuteur(getParamMod().getAuteur());
+                    guideToModify.setEditeur(getParamMod().getEditeur());
+                    guideToModify.setDateEdition(getParamMod().getDateEdition());
+                    guideToModify.setCouverture(getParamMod().getCouverture());
+                    guideToModify.setQuantiteStock(getParamMod().getQuantiteStock());
+                    guideToModify.setCouverture(guideHelper.getSelected().getCouverture());
+
+                    int p = JOptionPane.showConfirmDialog(null, "Vous Voulez Vraiment Modifier Ce Guide ??", "Confirm", JOptionPane.YES_NO_OPTION);
                     if (p == 0) {
-                        int res = guideService.supprimerGuide(guideHelper.getSelected());
-                        if (res > 0) {
-                            JOptionPane.showMessageDialog(null, "Guide  Bien Supprimer ", "Info", JOptionPane.INFORMATION_MESSAGE);
-                            guideHelper.remove(guideHelper.getSelected());
+                        int res = guideService.modifierGuide(guideToModify);
+
+                        if (res == 1) {
+                            JOptionPane.showMessageDialog(null, "Guide  bien modifier ");
+                            guideHelper.update(guideToModify);
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Priere de selectionez l'ouvrage a Modifier ", "Info", JOptionPane.INFORMATION_MESSAGE);
+
                     }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Priere de selectionez l'ouvrage a Modifier ", "Info", JOptionPane.INFORMATION_MESSAGE);
                 }
 
             }
@@ -1646,7 +1782,18 @@ public class OuvragesView extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Priere de selectionez l'ouvrage a supprimer ", "Info", JOptionPane.INFORMATION_MESSAGE);
                 }
             } else if (jTabbedPane2.getSelectedIndex() == 3) {
-
+                if (bandeDHelper.getSelected() != null) {
+                    int response = JOptionPane.showConfirmDialog(null, "Vous Voulez Vraiment Supprimer Ce Bande Desinee ??", "Confirm", JOptionPane.YES_NO_OPTION);
+                    if (response == 0) {
+                        int res = bandesDService.supprimerBande(bandeDHelper.getSelected());
+                        if (res > 0) {
+                            JOptionPane.showMessageDialog(null, "Bande Desinee Bien Supprimer ", "Info", JOptionPane.INFORMATION_MESSAGE);
+                            bandeDHelper.remove(bandeDHelper.getSelected());
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Priere de selectionez l'ouvrage a supprimer ", "Info", JOptionPane.INFORMATION_MESSAGE);
+                }
             } else if (jTabbedPane2.getSelectedIndex() == 4) {
                 if (guideHelper.getSelected() != null) {
                     int response = JOptionPane.showConfirmDialog(null, "Vous Voulez Vraiment Supprimer Ce Guide ??", "Confirm", JOptionPane.YES_NO_OPTION);
@@ -1673,16 +1820,17 @@ public class OuvragesView extends javax.swing.JFrame {
                 List<Roman> romans = romanService.rechercheRomans(ISBNRomanRech.getText(), titreRomanRech.getText(), auteurRomanRech.getText(), editeurRomanRech.getText());
                 romanHelper.setList(romans);
             } else if (jTabbedPane2.getSelectedIndex() == 1) {
-                String theme = themeLivreRech4.getSelectedItem() + "";
-                if (theme == "--selectionner--") {
-                    theme = "";
-                }
-                List<Livre> livres = livreService.rechercheLivres(ISBNRomanRech4.getText(), titreRomanRech4.getText(), auteurRomanRech4.getText(), editeurRomanRech4.getText(), theme);
+
+                List<Livre> livres = livreService.rechercheLivres(ISBNRomanRech4.getText(), titreRomanRech4.getText(), auteurRomanRech4.getText(), editeurRomanRech4.getText());
                 livreHelper.setList(livres);
             } else if (jTabbedPane2.getSelectedIndex() == 2) {
 
                 List<Revus> revus = revusService.rechercheRevus(ISBNRomanRech2.getText(), titreRomanRech2.getText(), auteurRomanRech2.getText(), editeurRomanRech2.getText());
                 revusHelper.setList(revus);
+            } else if (jTabbedPane2.getSelectedIndex() == 3) {
+
+                List<BandeDessine> bandes = bandesDService.rechercheBandes(bandeIsbnRech.getText(), bandeTitreRech.getText(), bandeAuteurRech.getText(), bandeEditeurRech.getText());
+                bandeDHelper.setList(bandes);
             } else if (jTabbedPane2.getSelectedIndex() == 4) {
 
                 List<GuideVoyage> guides = guideService.rechercheGuides(ISBNRomanRech3.getText(), titreRomanRech3.getText(), auteurRomanRech3.getText(), editeurRomanRech3.getText());
@@ -1703,6 +1851,13 @@ public class OuvragesView extends javax.swing.JFrame {
 
     private void typeOuvrageComboboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeOuvrageComboboxActionPerformed
         // TODO add your handling code here:
+
+        if (typeOuvrageCombobox.getSelectedItem() == "Bande dessinee") {
+            panelInfoSupLivre.setVisible(true);
+        } else {
+            panelInfoSupLivre.setVisible(false);
+
+        }
     }//GEN-LAST:event_typeOuvrageComboboxActionPerformed
 
     private void parcourirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parcourirActionPerformed
@@ -1723,31 +1878,14 @@ public class OuvragesView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_parcourirActionPerformed
 
-    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
-        // TODO add your handling code here:
-        Roman koko = new Roman();
-        koko = (Roman) getParam();
-        System.out.println(koko);
-    }//GEN-LAST:event_jButton16ActionPerformed
-
-    private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
-        // TODO add your handling code here:
-        System.out.println(jTabbedPane2.getSelectedIndex());
-    }//GEN-LAST:event_jButton17ActionPerformed
-
     private void typeOuvrageComboboxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_typeOuvrageComboboxItemStateChanged
-        // TODO add your handling code here:
-        if (typeOuvrageCombobox.getSelectedItem() == "Livre") {
-            panelInfoSupLivre.setVisible(true);
-        } else {
-            panelInfoSupLivre.setVisible(false);
-        }
+
 
     }//GEN-LAST:event_typeOuvrageComboboxItemStateChanged
 
     private void guidesTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guidesTableMouseClicked
         // TODO add your handling code here:
-        GuideVoyage guideVoyage = new GuideVoyage();
+        GuideVoyage guideVoyage = guideHelper.getSelected();
 
         isbnTextField.setText(guideVoyage.getId());
         titreTextField.setText(guideVoyage.getTitre());
@@ -1761,6 +1899,17 @@ public class OuvragesView extends javax.swing.JFrame {
 
     private void bandesDTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bandesDTableMouseClicked
         // TODO add your handling code here:
+        // TODO add your handling code here:
+        BandeDessine bandeDessine = bandeDHelper.getSelected();
+
+        isbnTextField.setText(bandeDessine.getId());
+        titreTextField.setText(bandeDessine.getTitre());
+        auteurTextField.setText(bandeDessine.getAuteur());
+        editeurTextField.setText(bandeDessine.getEditeur());
+        quantiteTextField.setText(bandeDessine.getQuantiteStock() + "");
+        typeOuvrageCombobox.setSelectedItem("Bande dessinee");
+        //dateEditionSchooser.setD(roman.getDateEdition());
+        imageLabel.setIcon(ResizeImage(bandeDessine.getCouverture()));
     }//GEN-LAST:event_bandesDTableMouseClicked
 
     private void revusTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_revusTableMouseClicked
@@ -1844,6 +1993,13 @@ public class OuvragesView extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_jLabel22MouseClicked
 
+    private void jLabel24MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel24MouseClicked
+        // TODO add your handling code here:
+        ConnexionViews cv = new ConnexionViews();
+        cv.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jLabel24MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -1892,8 +2048,15 @@ public class OuvragesView extends javax.swing.JFrame {
     private javax.swing.JTextField auteurRomanRech3;
     private javax.swing.JTextField auteurRomanRech4;
     private javax.swing.JTextField auteurTextField;
+    private javax.swing.JTextField bandeAuteurRech;
+    private javax.swing.JTextField bandeEditeurRech;
+    private javax.swing.JTextField bandeIsbnRech;
+    private javax.swing.JTextField bandeTitreRech;
     private javax.swing.JTable bandesDTable;
+    private javax.swing.JTextField collection;
+    private javax.swing.JTextField couleur;
     private datechooser.beans.DateChooserCombo dateEditionSchooser;
+    private javax.swing.JTextField dessin;
     private javax.swing.JTextField editeurRomanRech;
     private javax.swing.JTextField editeurRomanRech2;
     private javax.swing.JTextField editeurRomanRech3;
@@ -1904,8 +2067,6 @@ public class OuvragesView extends javax.swing.JFrame {
     private javax.swing.JTextField isbnTextField;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
-    private javax.swing.JButton jButton16;
-    private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
@@ -1916,20 +2077,22 @@ public class OuvragesView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel43;
     private javax.swing.JLabel jLabel44;
@@ -1973,18 +2136,14 @@ public class OuvragesView extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTextField jTextField25;
-    private javax.swing.JTextField jTextField26;
-    private javax.swing.JTextField jTextField27;
-    private javax.swing.JTextField jTextField28;
+    private javax.swing.JTextField jTextField2;
     private javax.swing.JPanel panelInfoSupLivre;
     private javax.swing.JButton parcourir;
     private javax.swing.JTextField quantiteTextField;
     private javax.swing.JTable revusTable;
+    private javax.swing.JTextField scenario;
     private javax.swing.JTable tableLivres;
     private javax.swing.JTable tableRomans;
-    private javax.swing.JComboBox<String> themeLivreCombobox;
-    private javax.swing.JComboBox<String> themeLivreRech4;
     private javax.swing.JTextField titreRomanRech;
     private javax.swing.JTextField titreRomanRech2;
     private javax.swing.JTextField titreRomanRech3;

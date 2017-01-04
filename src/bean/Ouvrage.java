@@ -24,6 +24,17 @@ public class Ouvrage {
     public Ouvrage() {
     }
 
+    public Ouvrage(String id, String titre, String auteur, String editeur, Date dateEdition, int quantiteStock) {
+        this.id = id;
+        this.titre = titre;
+        this.auteur = auteur;
+        this.editeur = editeur;
+        this.dateEdition = dateEdition;
+        this.quantiteStock = quantiteStock;
+    }
+    
+    
+
     public String getId() {
         return id;
     }

@@ -45,7 +45,7 @@ public class PersonneService {
         if (id != null && !id.equals("")) {
             requette += " AND id like '" + id + "%'";
         }
-
+        System.out.println("ha res de recherche -->"+personneDao.load(requette));
         return personneDao.load(requette);
     }
 
